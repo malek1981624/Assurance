@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Health insurance cost prediction - EDA | Kaggle</title>
+    <meta charset="utf-8" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="Download Open Datasets on 1000s of Projects + Share Projects on One Platform. Explore Popular Topics Like Government, Sports, Medicine, Fintech, Food, More. Flexible Data Ingestion." />
+    <meta name="turbolinks-cache-control" content="no-cache" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <meta name="theme-color" content="#008ABC" />
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript">
+        window["initialPageLoadStartTime"] = new Date().getTime();
+    </script>
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" /><link rel="dns-prefetch" href="https://stats.g.doubleclick.net" /><link rel="dns-prefetch" href="https://js.intercomcdn.com" /><link rel="dns-prefetch" href="https://storage.googleapis.com/" />
+    <link href="/static/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="manifest" href="/static/json/manifest.json">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Google+Material+Icons" rel="stylesheet" type='text/css' />
+        <link rel="canonical" href="/faizanurrahman/health-insurance-cost-prediction-eda" />
+        <link rel="stylesheet" type="text/css" href="/static/assets/vendor.css?v=72379e1be335" />
+        <link rel="stylesheet" type="text/css" href="/static/assets/app.css?v=3765d2633c4c" />
+    
+    
+ 
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==">
+        try{(function(a,s,y,n,c,h,i,d,e){d=s.createElement("style");
+        d.appendChild(s.createTextNode(""));s.head.appendChild(d);d=d.sheet;
+        y=y.map(x => d.insertRule(x + "{ opacity: 0 !important }"));
+        h.start=1*new Date;h.end=i=function(){y.forEach(x => x<d.cssRules.length ? d.deleteRule(x) : {})};
+        (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+        })(window,document,['.site-header-react__nav'],'dataLayer',2000,{'GTM-52LNT9S':true});}catch{}
+    </script>
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==">
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-12629138-1', {
+            'optimize_id': 'GTM-52LNT9S',
+            'displayFeaturesTask': null,
+            'send_page_view': false
+        });
+    </script>
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" async src="https://www.googletagmanager.com/gtag/js?id=UA-12629138-1"></script>
+
+<script nonce="GTnUmxmyRPqSPpcft2RA3A==">window.intercomSettings = {"app_id":"koj6gxx6"};</script>        <script nonce="GTnUmxmyRPqSPpcft2RA3A==">(function () { var w = window; var ic = w.Intercom; if (typeof ic === "function") { ic('reattach_activator'); ic('update', intercomSettings); } else { var d = document; var i = function () { i.c(arguments) }; i.q = []; i.c = function (args) { i.q.push(args) }; w.Intercom = i; function l() { var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://widget.intercom.io/widget/koj6gxx6'; var x = d.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); } if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } } })()</script>
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kaggledatasets" />
+    <meta name="og:url" content="https://kaggle.com/faizanurrahman/health-insurance-cost-prediction-eda" />
+    <meta name="og:title" content="Health insurance cost prediction - EDA" />
+    <meta name="og:description" content="Using data from Health Insurance Cost Prediction" />
+    <meta name="og:image" content="https://storage.googleapis.com/kaggle-avatars/thumbnails/default-thumb.png" />
+
+
+    
+    
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="application/ld+json">{"@context":"http://schema.org/","@type":"Article","author":{"@type":"Person","name":"faizanurrahman","sameAs":"/faizanurrahman"},"headline":"Health insurance cost prediction - EDA","url":"https://www.kaggle.com/faizanurrahman/health-insurance-cost-prediction-eda","dateModified":"2018-03-25T19:24:18.1633333","datePublished":"2018-03-25T19:24:18.1633333","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.kaggle.com/faizanurrahman/health-insurance-cost-prediction-eda"},"publisher":{"@type":"Organization","name":"Kaggle","sameAs":"https://www.kaggle.com","logo":{"type":"ImageObject","url":"https://www.kaggle.com/static/images/site-logo.png"}},"image":["https://storage.googleapis.com/kaggle-avatars/thumbnails/default-thumb.png"]}</script>
+
+
+    
+    
+    
+<script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript">
+    var Kaggle = Kaggle || {};
+
+    Kaggle.Current = {
+        antiForgeryToken: 'CfDJ8LdUzqlsSWBPr4Ce3rb9VL9AvYOCDKjMxH3MoSFVpcjqdLJCY_ojNVY9nV-YO2mt6JBQkM29f2hh0neQCiufzcUK_MCn0HPBfcpOeI8AqZ8HK8Ber1HxJOsgCuBzvAoPxoOQ7yRd2wekpit_F39c9yk',
+        isAnonymous: true,
+        analyticsToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTAwMTAsIlVzZXJJZCI6MH0.EZs39gQ7LznMYn0D-6sd53DsAZ848xllTk9Cz5w2pIs',
+        analyticsTokenExpiry: 15,
+        internetKernelsEnabled: false,
+        
+        
+        
+        
+        
+        
+        mdeImageUploader: true,
+        
+        
+        
+    }
+        Kaggle.Current.log = function(){};
+        Kaggle.Current.warn = function(){};
+
+    var decodeUserDisplayName = function () {
+        var escapedUserDisplayName = Kaggle.Current.userDisplayNameEscaped || "";
+        try {
+            var textVersion = new DOMParser().parseFromString(escapedUserDisplayName, "text/html").documentElement.textContent;
+            if (textVersion) {
+                return textVersion;
+            }
+        } catch(ex) {}
+        return escapedUserDisplayName;
+    }
+    Kaggle.Current.userDisplayName = decodeUserDisplayName();
+</script>
+
+    
+
+<script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript">
+    var Kaggle = Kaggle || {};
+    Kaggle.PageMessages = [];
+</script>
+
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript">
+/* <![CDATA[ */
+goog_snippet_vars = function() {
+    var w = window;
+    w.google_conversion_id = 955616553;
+    w.google_conversion_label = "QSjvCKDksHMQqZrWxwM";
+    w.google_conversion_value = 0.00;
+    w.google_conversion_currency = "USD";
+    w.google_remarketing_only = false;
+    w.google_conversion_language = "en";
+    w.google_conversion_format = "3";
+    w.google_conversion_color = "ffffff";
+}
+// DO NOT CHANGE THE CODE BELOW.
+goog_report_conversion = function(url) {
+    goog_snippet_vars();
+    window.google_conversion_format = "3";
+    var opt = new Object();
+    opt.onload_callback = function() {
+        if (typeof(url) != 'undefined') {
+            window.location = url;
+        }
+    }
+    var conv_handler = window['google_trackConversion'];
+    if (typeof(conv_handler) == 'function') {
+        conv_handler(opt);
+    }
+}
+/* ]]> */
+    </script>
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript"
+            src="//www.googleadservices.com/pagead/conversion_async.js">
+    </script>
+
+
+
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==">window['useKaggleAnalytics'] = true;</script>
+
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" src="/static/assets/vendor.js?v=b8ff5b62ad33" data-turbolinks-track="reload"></script>
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" src="/static/assets/app.js?v=a953d474d1dd" data-turbolinks-track="reload"></script>
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==">
+            (function() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register("/static/assets/service-worker.js").then(function(reg) {
+                        reg.onupdatefound = function() {
+                            var installingWorker = reg.installing;
+                            installingWorker.onstatechange = function() {
+                                switch (installingWorker.state) {
+                                case 'installed':
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('New or updated content is available.');
+                                    } else {
+                                        console.log('Content is now available offline!');
+                                    }
+                                    break;
+                                case 'redundant':
+                                    console.error('The installing service worker became redundant.');
+                                    break;
+                                }
+                            };
+                        };
+                    }).catch(function(e) {
+                      console.error('Error during service worker registration:', e);
+                    });
+                }
+            })();
+        </script>
+    <script nonce="GTnUmxmyRPqSPpcft2RA3A==" id="gapi-loader">
+        var clientLoaded = false;
+
+        function handleClientLoad() {
+            if (clientLoaded) {
+                return;
+            }
+            clientLoaded = true;
+            try {
+                gapi.load('client:auth2');
+            } catch (e) {
+            }
+        }
+
+        var clientLoader = document.createElement('script');
+        clientLoader.type = 'text/javascript';
+        clientLoader.src = 'https://apis.google.com/js/api.js';
+        clientLoader.defer = true;
+        clientLoader.async = true;
+
+        clientLoader.onload = function () {
+            handleClientLoad();
+        };
+
+        clientLoader.onreadystatechange = function () {
+            if (document.readyState === 'complete') {
+                handleClientLoad();
+            }
+        };
+
+        var parentScript = document.getElementById("gapi-loader");
+        parentScript.parentNode.insertBefore(clientLoader, parentScript.nextSibling);
+    </script>
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==" defer src="https://cdn.jsdelivr.net/npm/stackdriver-errors-js@0.7.0/dist/stackdriver-errors-concat.min.js"></script>
+        <script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript">
+            window.addEventListener('DOMContentLoaded', function () {
+                var errorHandler = new StackdriverErrorReporter();
+                errorHandler.start({
+                    key: 'AIzaSyDANGXFHtSIVc51MIdGwg4mQFgm3oNrKoo',
+                    projectId: 'kaggle-161607',
+                    service: 'web-fe',
+                    version: '6ec2b04c3ebe5af117d92b9e0b1fc5a70ccfc87f',
+                    context: { user: '0' }
+                });
+            });
+        </script>
+</head>
+<body data-turbolinks="true">
+    <main>
+        
+
+
+
+
+
+
+<div class="site-layout">
+        <div class="site-layout__header">
+            <div data-component-name="SiteHeaderContainer" style="display: flex; flex-direction: column; flex: 1 0 auto;"></div><script nonce="GTnUmxmyRPqSPpcft2RA3A==">var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({});performance && performance.mark && performance.mark("SiteHeaderContainer.componentCouldBootstrap");</script>
+        </div>
+
+    <div class="site-layout__main-content">
+        
+
+<div data-component-name="KernelViewer" style="display: flex; flex-direction: column; flex: 1 0 auto;"></div><script nonce="GTnUmxmyRPqSPpcft2RA3A==">var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push({"kernel":{"id":725251,"title":"Health insurance cost prediction - EDA","forkParent":null,"currentRunId":2922791,"mostRecentRunId":2922791,"url":"/faizanurrahman/health-insurance-cost-prediction-eda","tags":[],"commentCount":0,"upvoteCount":0,"viewCount":391,"forkCount":1,"bestPublicScore":null,"author":{"id":1455197,"displayName":"Faizan Ur Rahman","email":null,"editedEmail":null,"editedEmailCode":null,"userName":"faizanurrahman","thumbnailUrl":"https://storage.googleapis.com/kaggle-avatars/thumbnails/default-thumb.png","profileUrl":"/faizanurrahman","registerDate":"0001-01-01T00:00:00Z","lastVisitDate":"0001-01-01T00:00:00Z","statusId":0,"performanceTier":0,"userRoles":null,"userLogins":null,"groupIds":null,"duplicateUsers":null,"hasPhoneVerifications":false,"failedNerdchas":0,"hasPendingNerdcha":false,"deleteRequests":null,"userAttributes":null,"isAdmin":false,"isTvc":false,"isKaggleBot":false,"isAdminOrTvc":false,"isAnonymous":false,"canAct":false,"canBeSeen":false,"thumbnailName":null,"activationCode":"00000000-0000-0000-0000-000000000000","verificationCode":null,"isPhoneVerified":false},"isPrivate":false,"updatedTime":"2018-03-25T19:24:18.1633333Z","selfLink":"/kernels/725251","pinnedDockerImageVersionId":null,"dockerImagePinningType":"original","originalDockerImageId":null,"isLanguageTemplate":false,"medal":null,"topicId":null,"readGroupId":null,"writeGroupId":null,"slug":"health-insurance-cost-prediction-eda"},"kernelBlob":{"id":7804661,"settings":{"dockerImageVersionId":283,"dataSources":[{"sourceType":"DatasetVersion","sourceId":21036,"databundleVersionId":null,"mountSlug":null}],"sourceType":"notebook","language":"python","isGpuEnabled":false,"isInternetEnabled":false},"source":"{\u0022cells\u0022:[{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022b1076dfc-b9ad-4769-8c92-a6c4dae69d19\u0022,\u0022_uuid\u0022:\u00228f2839f25d086af736a60e9eeb907d3b93b6e0e5\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022# This Python 3 environment comes with many helpful analytics libraries installed\\n# It is defined by the kaggle/python docker image: https://github.com/kaggle/docker-python\\n# For example, here\u0027s several helpful packages to load in \\n\\nimport numpy as np # linear algebra\\nimport pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\\nimport matplotlib.pyplot as plt\\n%matplotlib inline\\nimport seaborn as sns\\nsns.set_style(\\\u0022whitegrid\\\u0022)\\n\\n# Input data files are available in the \\\u0022../input/\\\u0022 directory.\\n# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory\\n\\nimport os\\nprint(os.listdir(\\\u0022../input\\\u0022))\\n\\n# Any results you write to the current directory are saved as output.\u0022,\u0022execution_count\u0022:1,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u002279c7e3d0-c299-4dcb-8224-4455121ee9b0\u0022,\u0022_uuid\u0022:\u0022d629ff2d2480ee46fbb7e2d37f6b5fab8052498a\u0022,\u0022collapsed\u0022:true,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df = pd.read_csv(\u0027../input/insurance.csv\u0027)\u0022,\u0022execution_count\u0022:2,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00229bd27b08-93bc-4e7b-b3cd-9dfbd3ba9044\u0022,\u0022_uuid\u0022:\u002277600e7b4b0dc07bfbf17d34a525cfff6f33dcbc\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.head()\u0022,\u0022execution_count\u0022:3,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a3733ced-2e8f-4c3e-811f-41932d8b56c0\u0022,\u0022_uuid\u0022:\u0022bce25bcd40a3d7816583df77ad289d8155163998\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.info()\u0022,\u0022execution_count\u0022:4,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022852c1fcb-6186-4cbd-95c1-5296c181c61d\u0022,\u0022_uuid\u0022:\u002290f7c9806894a20d63f426dbef98cd00ed245c13\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.describe()\u0022,\u0022execution_count\u0022:5,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00226af464f2-5a7c-4157-a5e5-eb231d9e5b62\u0022,\u0022_uuid\u0022:\u0022fedc285e1e28c1ab0576bee36653c7eddbbb6a84\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.isnull().sum()\u0022,\u0022execution_count\u0022:6,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00225b3834d9-3c62-4706-82e8-0b507c3e84d6\u0022,\u0022_uuid\u0022:\u00227c080796948994f5b2c263a0df9f87ce695df0ce\u0022},\u0022cell_type\u0022:\u0022markdown\u0022,\u0022source\u0022:\u0022# Number of people who are smokers.\u0022},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a50870cf-65dd-4612-87cd-25ff5dc7e512\u0022,\u0022_uuid\u0022:\u0022440d4863e22e7fe8f58bb8cf00afd70df8ada132\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027smoker\u0027,data=df,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:7,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00222277f13a-20c9-4db6-a37e-a7334a7b8e4c\u0022,\u0022_uuid\u0022:\u0022fb5201dbc6d0413250948ae40ad4bd0bd6e791ff\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027children\u0027,data=df,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:8,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022516f3ce4-5dbb-4ddd-8669-87ea2296d8da\u0022,\u0022_uuid\u0022:\u0022fbad06f599582d2c106197ae5d986c88ba4a6c1f\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.age.nunique()\u0022,\u0022execution_count\u0022:9,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00226dd68688-4b11-42a8-894b-0948884b00de\u0022,\u0022_uuid\u0022:\u00229c0dc4bb73bd9e6afb068231ee78cadcd022a7bf\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027region\u0027,data=df,hue=\u0027sex\u0027,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:10,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022242a1608-722e-4a50-97f2-48c70511c2c4\u0022,\u0022_uuid\u0022:\u00229b41b24af4f9a33c08eabf1a7fab0b04ca83d428\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_region = df.groupby(\u0027region\u0027).charges.sum()\\nby_region.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:11,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022dc74d2da-b5c4-4ac1-96d2-77fa630abb27\u0022,\u0022_uuid\u0022:\u0022b1e5a40ca0ac1372940bf05748f66876a2fc54d7\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_sex = df.groupby(\u0027sex\u0027).charges.sum()\\nby_sex.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:12,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022530f1004-7e19-48b8-9271-2d9cb7fd5c88\u0022,\u0022_uuid\u0022:\u0022ac861f680d8f499d62fc52eb3c48735d3dfd98d2\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_nofchildren = df.groupby(\u0027children\u0027).charges.sum()\\nby_nofchildren.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:13,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a69ef4fd-9c12-4862-975e-d7bffe574bf2\u0022,\u0022_uuid\u0022:\u0022a28c6794e5a76cbc52c2ce0f93dfb792dc2ad2ed\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_smoker = df.groupby(\u0027smoker\u0027).charges.sum()\\nby_smoker.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:14,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u002280954230-6c88-4e5e-91cb-1b73546489d8\u0022,\u0022_uuid\u0022:\u00228829140d435bfc6ce9502845db7225cb9c7f8512\u0022,\u0022collapsed\u0022:true,\u0022trusted\u0022:false},\u0022cell_type\u0022:\u0022markdown\u0022,\u0022source\u0022:\u0022# To be continued\u0022},{\u0022metadata\u0022:{\u0022trusted\u0022:true,\u0022collapsed\u0022:true,\u0022_uuid\u0022:\u00223ffad35c0612da0dbd0b752d00e0965a37696976\u0022},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022\u0022,\u0022execution_count\u0022:null,\u0022outputs\u0022:[]}],\u0022metadata\u0022:{\u0022kernelspec\u0022:{\u0022display_name\u0022:\u0022Python 3\u0022,\u0022language\u0022:\u0022python\u0022,\u0022name\u0022:\u0022python3\u0022},\u0022language_info\u0022:{\u0022name\u0022:\u0022python\u0022,\u0022version\u0022:\u00223.6.4\u0022,\u0022mimetype\u0022:\u0022text/x-python\u0022,\u0022codemirror_mode\u0022:{\u0022name\u0022:\u0022ipython\u0022,\u0022version\u0022:3},\u0022pygments_lexer\u0022:\u0022ipython3\u0022,\u0022nbconvert_exporter\u0022:\u0022python\u0022,\u0022file_extension\u0022:\u0022.py\u0022}},\u0022nbformat\u0022:4,\u0022nbformat_minor\u0022:1}","dateCreated":"2018-03-25T19:24:17.597Z"},"kernelRun":{"id":2922791,"kernelId":725251,"status":"complete","type":"batch","sourceType":"notebook","language":"python","title":"Health insurance cost prediction - EDA","dateCreated":"2018-03-25T19:24:17.597Z","dateEvaluated":"2018-03-25T19:24:18.163Z","dateCancelled":null,"workerContainerPort":null,"workerUptimeSeconds":1488771,"workerIPAddress":"172.16.2.8     ","workerIPAddressExternal":null,"scriptLanguageId":9,"scriptLanguageName":"IPython Notebook HTML","renderedOutputUrl":"https://www.kaggleusercontent.com/kf/2922791/eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..bS_tEFsrWwUqPpJYqbQSIQ.kK7K-TkR1tUFvpo-bSzHs7t86zmb2Y6zWGJhmGUdS8hyZIi-k4zycVfAXhaIM_-2z8zCJppcqDHPf2rLJJaivbsrdjyUoUGC9pS-ewDWvXtFPvsDjYbvbnq67jmZx6FV7ikXqo2Yi6fz3_V32katWIvjNvNZ3OWNHBlAGPBB0byCBdJH6_JZvW_62F7_wk4qU-IFn6ZtsBz17m9XOpyO1Q.eVzVz_zknH026l82Yu5O0g/__results__.html","commit":{"id":7804661,"settings":{"dockerImageVersionId":283,"dataSources":[{"sourceType":"DatasetVersion","sourceId":21036,"databundleVersionId":null,"mountSlug":null}],"sourceType":"notebook","language":"python","isGpuEnabled":false,"isInternetEnabled":false},"source":"{\u0022cells\u0022:[{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022b1076dfc-b9ad-4769-8c92-a6c4dae69d19\u0022,\u0022_uuid\u0022:\u00228f2839f25d086af736a60e9eeb907d3b93b6e0e5\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022# This Python 3 environment comes with many helpful analytics libraries installed\\n# It is defined by the kaggle/python docker image: https://github.com/kaggle/docker-python\\n# For example, here\u0027s several helpful packages to load in \\n\\nimport numpy as np # linear algebra\\nimport pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\\nimport matplotlib.pyplot as plt\\n%matplotlib inline\\nimport seaborn as sns\\nsns.set_style(\\\u0022whitegrid\\\u0022)\\n\\n# Input data files are available in the \\\u0022../input/\\\u0022 directory.\\n# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory\\n\\nimport os\\nprint(os.listdir(\\\u0022../input\\\u0022))\\n\\n# Any results you write to the current directory are saved as output.\u0022,\u0022execution_count\u0022:1,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u002279c7e3d0-c299-4dcb-8224-4455121ee9b0\u0022,\u0022_uuid\u0022:\u0022d629ff2d2480ee46fbb7e2d37f6b5fab8052498a\u0022,\u0022collapsed\u0022:true,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df = pd.read_csv(\u0027../input/insurance.csv\u0027)\u0022,\u0022execution_count\u0022:2,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00229bd27b08-93bc-4e7b-b3cd-9dfbd3ba9044\u0022,\u0022_uuid\u0022:\u002277600e7b4b0dc07bfbf17d34a525cfff6f33dcbc\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.head()\u0022,\u0022execution_count\u0022:3,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a3733ced-2e8f-4c3e-811f-41932d8b56c0\u0022,\u0022_uuid\u0022:\u0022bce25bcd40a3d7816583df77ad289d8155163998\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.info()\u0022,\u0022execution_count\u0022:4,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022852c1fcb-6186-4cbd-95c1-5296c181c61d\u0022,\u0022_uuid\u0022:\u002290f7c9806894a20d63f426dbef98cd00ed245c13\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.describe()\u0022,\u0022execution_count\u0022:5,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00226af464f2-5a7c-4157-a5e5-eb231d9e5b62\u0022,\u0022_uuid\u0022:\u0022fedc285e1e28c1ab0576bee36653c7eddbbb6a84\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.isnull().sum()\u0022,\u0022execution_count\u0022:6,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00225b3834d9-3c62-4706-82e8-0b507c3e84d6\u0022,\u0022_uuid\u0022:\u00227c080796948994f5b2c263a0df9f87ce695df0ce\u0022},\u0022cell_type\u0022:\u0022markdown\u0022,\u0022source\u0022:\u0022# Number of people who are smokers.\u0022},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a50870cf-65dd-4612-87cd-25ff5dc7e512\u0022,\u0022_uuid\u0022:\u0022440d4863e22e7fe8f58bb8cf00afd70df8ada132\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027smoker\u0027,data=df,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:7,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00222277f13a-20c9-4db6-a37e-a7334a7b8e4c\u0022,\u0022_uuid\u0022:\u0022fb5201dbc6d0413250948ae40ad4bd0bd6e791ff\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027children\u0027,data=df,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:8,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022516f3ce4-5dbb-4ddd-8669-87ea2296d8da\u0022,\u0022_uuid\u0022:\u0022fbad06f599582d2c106197ae5d986c88ba4a6c1f\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022df.age.nunique()\u0022,\u0022execution_count\u0022:9,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u00226dd68688-4b11-42a8-894b-0948884b00de\u0022,\u0022_uuid\u0022:\u00229c0dc4bb73bd9e6afb068231ee78cadcd022a7bf\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022sns.countplot(x=\u0027region\u0027,data=df,hue=\u0027sex\u0027,palette=\u0027viridis\u0027)\u0022,\u0022execution_count\u0022:10,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022242a1608-722e-4a50-97f2-48c70511c2c4\u0022,\u0022_uuid\u0022:\u00229b41b24af4f9a33c08eabf1a7fab0b04ca83d428\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_region = df.groupby(\u0027region\u0027).charges.sum()\\nby_region.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:11,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022dc74d2da-b5c4-4ac1-96d2-77fa630abb27\u0022,\u0022_uuid\u0022:\u0022b1e5a40ca0ac1372940bf05748f66876a2fc54d7\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_sex = df.groupby(\u0027sex\u0027).charges.sum()\\nby_sex.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:12,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022530f1004-7e19-48b8-9271-2d9cb7fd5c88\u0022,\u0022_uuid\u0022:\u0022ac861f680d8f499d62fc52eb3c48735d3dfd98d2\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_nofchildren = df.groupby(\u0027children\u0027).charges.sum()\\nby_nofchildren.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:13,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u0022a69ef4fd-9c12-4862-975e-d7bffe574bf2\u0022,\u0022_uuid\u0022:\u0022a28c6794e5a76cbc52c2ce0f93dfb792dc2ad2ed\u0022,\u0022trusted\u0022:true},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022by_smoker = df.groupby(\u0027smoker\u0027).charges.sum()\\nby_smoker.plot(kind=\u0027bar\u0027)\u0022,\u0022execution_count\u0022:14,\u0022outputs\u0022:[]},{\u0022metadata\u0022:{\u0022_cell_guid\u0022:\u002280954230-6c88-4e5e-91cb-1b73546489d8\u0022,\u0022_uuid\u0022:\u00228829140d435bfc6ce9502845db7225cb9c7f8512\u0022,\u0022collapsed\u0022:true,\u0022trusted\u0022:false},\u0022cell_type\u0022:\u0022markdown\u0022,\u0022source\u0022:\u0022# To be continued\u0022},{\u0022metadata\u0022:{\u0022trusted\u0022:true,\u0022collapsed\u0022:true,\u0022_uuid\u0022:\u00223ffad35c0612da0dbd0b752d00e0965a37696976\u0022},\u0022cell_type\u0022:\u0022code\u0022,\u0022source\u0022:\u0022\u0022,\u0022execution_count\u0022:null,\u0022outputs\u0022:[]}],\u0022metadata\u0022:{\u0022kernelspec\u0022:{\u0022display_name\u0022:\u0022Python 3\u0022,\u0022language\u0022:\u0022python\u0022,\u0022name\u0022:\u0022python3\u0022},\u0022language_info\u0022:{\u0022name\u0022:\u0022python\u0022,\u0022version\u0022:\u00223.6.4\u0022,\u0022mimetype\u0022:\u0022text/x-python\u0022,\u0022codemirror_mode\u0022:{\u0022name\u0022:\u0022ipython\u0022,\u0022version\u0022:3},\u0022pygments_lexer\u0022:\u0022ipython3\u0022,\u0022nbconvert_exporter\u0022:\u0022python\u0022,\u0022file_extension\u0022:\u0022.py\u0022}},\u0022nbformat\u0022:4,\u0022nbformat_minor\u0022:1}","dateCreated":"2018-03-25T19:24:17.597Z"},"resources":null,"isolatorResults":"\u003cresults\u003e\u003cdisk_kb_free\u003e944992\u003c/disk_kb_free\u003e\u003cdocker_image_digest\u003e5540f2bbb88795dfe48f7d90aef104ff9497edd776062924c006c2c5d469ba5f\u003c/docker_image_digest\u003e\u003cdocker_image_id\u003esha256:61cc9a44d41232285d1e8e2cd3011599c03109845d69a1d0702aa211b4428fba\u003c/docker_image_id\u003e\u003cdocker_image_name\u003egcr.io/kaggle-images/python\u003c/docker_image_name\u003e\u003cexit_code\u003e0\u003c/exit_code\u003e\u003cfailure_message /\u003e\u003cinvalid_path_errors\u003eFalse\u003c/invalid_path_errors\u003e\u003cout_of_memory\u003eFalse\u003c/out_of_memory\u003e\u003crun_time_seconds\u003e10.4942046268843\u003c/run_time_seconds\u003e\u003csucceeded\u003eTrue\u003c/succeeded\u003e\u003ctimeout_exceeded\u003eFalse\u003c/timeout_exceeded\u003e\u003cused_all_space\u003eFalse\u003c/used_all_space\u003e\u003cwas_killed\u003eFalse\u003c/was_killed\u003e\u003c/results\u003e","runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageDigest":"5540f2bbb88795dfe48f7d90aef104ff9497edd776062924c006c2c5d469ba5f","dockerImageId":"sha256:61cc9a44d41232285d1e8e2cd3011599c03109845d69a1d0702aa211b4428fba","dockerImageName":"kaggle/python","diskKbFree":944992,"failureMessage":"","exitCode":0,"queuedSeconds":0,"outputSizeBytes":0,"runTimeSeconds":10.4942046268843,"usedAllSpace":false,"timeoutExceeded":false,"isValidStatus":false,"wasGpuEnabled":false,"wasInternetEnabled":false,"outOfMemory":false,"invalidPathErrors":false,"succeeded":true,"wasKilled":false},"outputFilesTotalSizeBytes":268679,"dockerImageVersionId":283,"usedCustomDockerImage":false,"dataSources":[{"sourceType":"DatasetVersion","sourceId":21036,"databundleVersionId":null,"mountSlug":""}]},"author":{"id":1455197,"displayName":"Faizan Ur Rahman","email":null,"editedEmail":null,"editedEmailCode":null,"userName":"faizanurrahman","thumbnailUrl":"https://storage.googleapis.com/kaggle-avatars/thumbnails/default-thumb.png","profileUrl":"/faizanurrahman","registerDate":"0001-01-01T00:00:00Z","lastVisitDate":"0001-01-01T00:00:00Z","statusId":0,"performanceTier":0,"userRoles":null,"userLogins":null,"groupIds":null,"duplicateUsers":null,"hasPhoneVerifications":false,"failedNerdchas":0,"hasPendingNerdcha":false,"deleteRequests":null,"userAttributes":null,"isAdmin":false,"isTvc":false,"isKaggleBot":false,"isAdminOrTvc":false,"isAnonymous":false,"canAct":false,"canBeSeen":false,"thumbnailName":null,"activationCode":"00000000-0000-0000-0000-000000000000","verificationCode":null,"isPhoneVerified":false},"baseUrl":"/faizanurrahman/health-insurance-cost-prediction-eda","collaborators":{"owner":{"userId":1455197,"groupId":null,"groupMemberCount":null,"profileUrl":"/faizanurrahman","thumbnailUrl":"https://storage.googleapis.com/kaggle-avatars/thumbnails/default-thumb.png","name":"Faizan Ur Rahman","slug":"faizanurrahman","userTier":0,"joinDate":null,"type":"owner","isUser":true,"isGroup":false},"collaborators":[]},"initialTab":null,"log":"[{\n  \u0022data\u0022: \u0022[NbConvertApp] Converting notebook script.ipynb to html\\n\u0022,\n  \u0022stream_name\u0022: \u0022stderr\u0022,\n  \u0022time\u0022: 3.6704620530363172\n},{\n  \u0022data\u0022: \u0022[NbConvertApp] Executing notebook with kernel: python3\\n\u0022,\n  \u0022stream_name\u0022: \u0022stderr\u0022,\n  \u0022time\u0022: 3.7051727920770645\n},{\n  \u0022data\u0022: \u0022[NbConvertApp] Support files will be in __results___files/\\n[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Making directory __results___files\\n\u0022,\n  \u0022stream_name\u0022: \u0022stderr\u0022,\n  \u0022time\u0022: 9.798372288933024\n},{\n  \u0022data\u0022: \u0022[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Making directory __results___files\\n[NbConvertApp] Writing 268679 bytes to __results__.html\\n\u0022,\n  \u0022stream_name\u0022: \u0022stderr\u0022,\n  \u0022time\u0022: 9.8349201050587\n}]","outputFiles":[],"outputFilesCropped":false,"ouputFilesOwnerInfo":{"databundleVersionId":0,"dataset":null,"competition":null,"kernel":{"kernelId":725251,"kernelVersionId":2922791,"dataviewToken":"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..U0lQ9kv3j4m5ETjSCkneDw.CwJrXObTxMJUXWt8rZp68mYOe6AGsC4q5tZUpd0nHzFKRmdy-yPCVr9p00DwUT8nAsV7WyuJFTZlUyNb2OZeRDSD_xO-sroZX7qmGlDqavClzQJyvGXpd7eg9Z7dTvkENVI8DTog8SjgRejK0LGJKWQy26jz2wAPC9dFhkPMZlYAp4siU0P7YMWdi9YXbn6pfGHn8VTh3cSCmsG-0fhSZCfdWqrbTM0a9N4kbD-RU_udZC3aw_P2hbE2t_FXkH1KjRh0siLMAUYj17M68BESowU1lX0njydUkgT6t_cufB8PaBhDBh918afJSObd6lwHor2kgisSoKcqIRjW3lhU42NY01k8h5rekPw3GS_F2ehNZnzLI4iSCF9uuz0puBt6FbWEozUdmAFJQbLBmzX_EmtcElZX3J3ng0LKdZ8IOaUHfODTMtdJHPBXeqQD7_7UcUJkrqQBbVhAHlSayv-1eNdGyz2jvjcixfxfAgs2eTmoyTyV60N6eRJ8Anmqyz27.cPzuK2vSII2CKkfGbzQVPg","scope":"faizanurrahman/health-insurance-cost-prediction-eda"},"previewsDisabled":false},"pageMessages":[],"dataSources":[{"imageUrl":"https://storage.googleapis.com/kaggle-datasets-images/new-version-temp-images/default-backgrounds-43.png-1592799/dataset-thumbnail.png","sourceUrl":"/annetxu/health-insurance-cost-prediction","slug":"health-insurance-cost-prediction","lastUpdated":"2018-03-11T06:40:39.9484367Z","overview":"","sourceType":"dataset","sourceVersionType":"fileset","sourceId":21036,"sourceVersionNumber":1,"maxVersionNumber":1,"descriptionMimeType":"text/plain","deleted":false,"private":false,"privateButVisible":false,"ownerInfo":{"databundleVersionId":21036,"dataset":{"datasetId":15919,"datasetVersionId":21036,"dataviewToken":"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..vCl06Gr7T8LRwn2tSTB0XA.7d_QFmw3P7cK0Tec6tWW85y8DuvsF0_R6hrEr1NpqgrPJWhbCUbvhEvmHl1ennvUuUXMSF7M8g0Ex89Qs0rZMSdY0kwlBW5ZlwEBN0ai2WsLIX2vwPlld6Rp94_5DxW1CRL81j27M94oGMsfOFZTmLBSI69HBO5-coFdEiP9a6icFIZ-W-uAgoP4Is5JHNU1GeesRFgNe_6Uw9KZHGasl6ahfBIxr0pd9o_yAzw2AM4tJiHbBB5Lj0QHgB2uKW1qWTlBTzlCvzYNSuJm3KKSiNuwPSDr1b7424nZT-oIDYkSAhGc9PXVidk3fvhxaYufUtC9FlSwt3WKwbP9qHvLNNvtQFkbjy_DphN6zenDYpgPBCNK_XM-K528WoldzuF2cmaoZEY9lr7MKhtjqnNqBO_GX4rdltR3apsGoMF9Pqhc33QWFvdf1C3VIJPAU7eAAhmbcKMZGy-O4WX3N_UOgs4AcGwhp8cJoywGRGcgqBBQ0Hx1M5YHFd3Wbi0sRLMmYe5Csb09JVO24skVLX2VVpmEUeE4zcyFbdOdarSXrTA.6_HbWnA-uZB86jo5HUk88A","scope":"annetxu/health-insurance-cost-prediction"},"competition":null,"kernel":null,"previewsDisabled":false},"mountSlug":"","type":"dataSource","collapsed":false,"info":{"metrics":null,"archiveInfo":null,"archiveInfoV2":null,"blobFileInfo":null,"convertCsvInfo":null,"kernelReference":null},"settings":{"csvSettings":null,"bigQuerySettings":null,"bigQueryMirrorSettings":null,"storageSettings":null,"remoteUrlSettings":null,"remoteGithubSettings":null},"render":null,"totalChildren":0,"children":[{"id":0,"blobFileId":0,"databundleVersionId":21036,"databundleVersionObjectType":"file","url":null,"relativePath":"insurance.csv","creationDate":null,"isDummy":false,"size":55628,"fullPath":"../input/insurance.csv","previewUrl":"kernels/dataset-preview/21036?relativePath=insurance.csv","downloadUrl":"/annetxu/health-insurance-cost-prediction/download/SJJrc8QgJDqQrkdyg9Gx%2Fversions%2FklswGXNmiBjNZHO976bf%2Ffiles%2Finsurance.csv?datasetVersionNumber=1","fileType":".csv","contentLength":55628,"contentType":"text/csv","contentMD5":"1TZNBiRvtL+kzH0e6J69DQ==","validationErrors":null,"type":"databundleVersionObject","collapsed":false,"info":{"metrics":null,"archiveInfo":null,"archiveInfoV2":null,"blobFileInfo":null,"convertCsvInfo":null,"kernelReference":null},"settings":{"csvSettings":null,"bigQuerySettings":null,"bigQueryMirrorSettings":null,"storageSettings":null,"remoteUrlSettings":null,"remoteGithubSettings":null},"render":null,"totalChildren":7,"children":[{"columns":[{"order":0,"originalType":"","type":"numeric","extendedType":"integer","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"finiteCount":1338,"infiniteCount":0,"mean":39.20702541106129,"standardDeviation":14.04470903895454,"minimum":18.0,"minimumFinite":18.0,"maximum":64.0,"maximumFinite":64.0,"quantiles":[{"point":0.25,"value":27.0},{"point":0.5,"value":39.0},{"point":0.75,"value":51.0}],"histogram":{"buckets":[{"index":0,"label":"18.00 - 22.60","leftValue":"-Infinity","rightValue":22.6,"count":222},{"index":1,"label":"22.60 - 27.20","leftValue":22.6,"rightValue":27.2,"count":140},{"index":2,"label":"27.20 - 31.80","leftValue":27.2,"rightValue":31.799999999999997,"count":109},{"index":3,"label":"31.80 - 36.40","leftValue":31.799999999999997,"rightValue":36.4,"count":128},{"index":4,"label":"36.40 - 41.00","leftValue":36.4,"rightValue":41.0,"count":102},{"index":5,"label":"41.00 - 45.60","leftValue":41.0,"rightValue":45.599999999999994,"count":137},{"index":6,"label":"45.60 - 50.20","leftValue":45.599999999999994,"rightValue":50.199999999999996,"count":144},{"index":7,"label":"50.20 - 54.80","leftValue":50.199999999999996,"rightValue":54.8,"count":114},{"index":8,"label":"54.80 - 59.40","leftValue":54.8,"rightValue":59.4,"count":128},{"index":9,"label":"59.40 - 64.00","leftValue":59.4,"rightValue":"Infinity","count":114}],"type":"string"},"column":{"order":0,"originalType":null,"type":"numeric","extendedType":"integer","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/FVo89ywPtvM5LszSDFLj","firestoreKey":"FVo89ywPtvM5LszSDFLj","name":"age","description":null},"type":"numeric","extendedType":"integer","exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/FVo89ywPtvM5LszSDFLj","firestoreKey":"FVo89ywPtvM5LszSDFLj","name":"age","description":null},{"order":1,"originalType":"","type":"string","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"counts":[{"key":"male","value":676},{"key":"female","value":662}],"uniqueValueCount":2,"mostCommonValue":"male","mostCommonValueCount":676,"column":{"order":1,"originalType":null,"type":"string","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/rM8qVsgUDxxR0NKZvk2h","firestoreKey":"rM8qVsgUDxxR0NKZvk2h","name":"sex","description":null},"type":"string","extendedType":null,"exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/rM8qVsgUDxxR0NKZvk2h","firestoreKey":"rM8qVsgUDxxR0NKZvk2h","name":"sex","description":null},{"order":2,"originalType":"","type":"numeric","extendedType":"decimal","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"finiteCount":1338,"infiniteCount":0,"mean":30.663396860986538,"standardDeviation":6.095907641589428,"minimum":15.96,"minimumFinite":15.96,"maximum":53.13,"maximumFinite":53.13,"quantiles":[{"point":0.25,"value":26.29},{"point":0.5,"value":30.4},{"point":0.75,"value":34.7}],"histogram":{"buckets":[{"index":0,"label":"15.96 - 19.68","leftValue":"-Infinity","rightValue":19.677,"count":30},{"index":1,"label":"19.68 - 23.39","leftValue":19.677,"rightValue":23.394000000000002,"count":127},{"index":2,"label":"23.39 - 27.11","leftValue":23.394000000000002,"rightValue":27.111,"count":234},{"index":3,"label":"27.11 - 30.83","leftValue":27.111,"rightValue":30.828000000000003,"count":319},{"index":4,"label":"30.83 - 34.55","leftValue":30.828000000000003,"rightValue":34.545,"count":288},{"index":5,"label":"34.55 - 38.26","leftValue":34.545,"rightValue":38.262,"count":195},{"index":6,"label":"38.26 - 41.98","leftValue":38.262,"rightValue":41.979,"count":96},{"index":7,"label":"41.98 - 45.70","leftValue":41.979,"rightValue":45.696,"count":32},{"index":8,"label":"45.70 - 49.41","leftValue":45.696,"rightValue":49.413000000000004,"count":14},{"index":9,"label":"49.41 - 53.13","leftValue":49.413000000000004,"rightValue":"Infinity","count":3}],"type":"string"},"column":{"order":2,"originalType":null,"type":"numeric","extendedType":"decimal","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/gNlueJ3MoSNelwzU9blJ","firestoreKey":"gNlueJ3MoSNelwzU9blJ","name":"bmi","description":null},"type":"numeric","extendedType":"decimal","exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/gNlueJ3MoSNelwzU9blJ","firestoreKey":"gNlueJ3MoSNelwzU9blJ","name":"bmi","description":null},{"order":3,"originalType":"","type":"numeric","extendedType":"integer","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"finiteCount":1338,"infiniteCount":0,"mean":1.0949177877429,"standardDeviation":1.2050421724928453,"minimum":0.0,"minimumFinite":0.0,"maximum":5.0,"maximumFinite":5.0,"quantiles":[{"point":0.25,"value":0.0},{"point":0.5,"value":1.0},{"point":0.75,"value":2.0}],"histogram":{"buckets":[{"index":0,"label":"0.00 - 0.50","leftValue":"-Infinity","rightValue":0.5,"count":574},{"index":1,"label":"0.50 - 1.00","leftValue":0.5,"rightValue":1.0,"count":0},{"index":2,"label":"1.00 - 1.50","leftValue":1.0,"rightValue":1.5,"count":324},{"index":3,"label":"1.50 - 2.00","leftValue":1.5,"rightValue":2.0,"count":0},{"index":4,"label":"2.00 - 2.50","leftValue":2.0,"rightValue":2.5,"count":240},{"index":5,"label":"2.50 - 3.00","leftValue":2.5,"rightValue":3.0,"count":0},{"index":6,"label":"3.00 - 3.50","leftValue":3.0,"rightValue":3.5,"count":157},{"index":7,"label":"3.50 - 4.00","leftValue":3.5,"rightValue":4.0,"count":0},{"index":8,"label":"4.00 - 4.50","leftValue":4.0,"rightValue":4.5,"count":25},{"index":9,"label":"4.50 - 5.00","leftValue":4.5,"rightValue":"Infinity","count":18}],"type":"string"},"column":{"order":3,"originalType":null,"type":"numeric","extendedType":"integer","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/t37LBsgGrW2rOrB2EXv0","firestoreKey":"t37LBsgGrW2rOrB2EXv0","name":"children","description":null},"type":"numeric","extendedType":"integer","exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/t37LBsgGrW2rOrB2EXv0","firestoreKey":"t37LBsgGrW2rOrB2EXv0","name":"children","description":null},{"order":4,"originalType":"","type":"boolean","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"trueCount":0,"falseCount":0,"histogram":{"buckets":[{"index":0,"label":"false","leftValue":0.0,"rightValue":0.0,"count":0},{"index":1,"label":"true","leftValue":0.0,"rightValue":0.0,"count":0}],"type":"boolean"},"column":{"order":4,"originalType":null,"type":"boolean","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/BzYdC56N3TqKVVF7XvOk","firestoreKey":"BzYdC56N3TqKVVF7XvOk","name":"smoker","description":null},"type":"boolean","extendedType":null,"exception":null,"nullCount":0,"nonNullCount":1338,"validCount":0,"invalidCount":1338}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/BzYdC56N3TqKVVF7XvOk","firestoreKey":"BzYdC56N3TqKVVF7XvOk","name":"smoker","description":null},{"order":5,"originalType":"","type":"string","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"counts":[{"key":"southeast","value":364},{"key":"southwest","value":325},{"key":"northwest","value":325},{"key":"northeast","value":324}],"uniqueValueCount":4,"mostCommonValue":"southeast","mostCommonValueCount":364,"column":{"order":5,"originalType":null,"type":"string","extendedType":null,"isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/nryPY13JR29iIlQSPzuq","firestoreKey":"nryPY13JR29iIlQSPzuq","name":"region","description":null},"type":"string","extendedType":null,"exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/nryPY13JR29iIlQSPzuq","firestoreKey":"nryPY13JR29iIlQSPzuq","name":"region","description":null},{"order":6,"originalType":"","type":"numeric","extendedType":"decimal","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":{"metrics":{"finiteCount":1338,"infiniteCount":0,"mean":13270.422265141257,"standardDeviation":12105.484975561605,"minimum":1121.8739,"minimumFinite":1121.8739,"maximum":63770.42801,"maximumFinite":63770.42801,"quantiles":[{"point":0.25,"value":4738.2682},{"point":0.5,"value":9386.1613},{"point":0.75,"value":16657.71745}],"histogram":{"buckets":[{"index":0,"label":"1121.87 - 7386.73","leftValue":"-Infinity","rightValue":7386.729311000001,"count":536},{"index":1,"label":"7386.73 - 13651.58","leftValue":7386.729311000001,"rightValue":13651.584722000001,"count":398},{"index":2,"label":"13651.58 - 19916.44","leftValue":13651.584722000001,"rightValue":19916.440133,"count":129},{"index":3,"label":"19916.44 - 26181.30","leftValue":19916.440133,"rightValue":26181.295544,"count":86},{"index":4,"label":"26181.30 - 32446.15","leftValue":26181.295544,"rightValue":32446.150955,"count":35},{"index":5,"label":"32446.15 - 38711.01","leftValue":32446.150955,"rightValue":38711.006366,"count":59},{"index":6,"label":"38711.01 - 44975.86","leftValue":38711.006366,"rightValue":44975.861777000006,"count":57},{"index":7,"label":"44975.86 - 51240.72","leftValue":44975.861777000006,"rightValue":51240.717188,"count":32},{"index":8,"label":"51240.72 - 57505.57","leftValue":51240.717188,"rightValue":57505.572599,"count":2},{"index":9,"label":"57505.57 - 63770.43","leftValue":57505.572599,"rightValue":"Infinity","count":4}],"type":"string"},"column":{"order":6,"originalType":null,"type":"numeric","extendedType":"decimal","isNullable":null,"isPrimaryKey":null,"isLabel":null,"info":null,"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/4MH9SFafQSncrje7jqRd","firestoreKey":"4MH9SFafQSncrje7jqRd","name":"charges","description":null},"type":"numeric","extendedType":"decimal","exception":null,"nullCount":0,"nonNullCount":1338,"validCount":1338,"invalidCount":0}},"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv/columns/4MH9SFafQSncrje7jqRd","firestoreKey":"4MH9SFafQSncrje7jqRd","name":"charges","description":null}],"totalRows":1338,"type":"genericTable","collapsed":false,"info":null,"settings":null,"render":null,"totalChildren":0,"children":[],"firestorePath":null,"firestoreKey":null,"name":"","description":null}],"firestorePath":"SJJrc8QgJDqQrkdyg9Gx/versions/klswGXNmiBjNZHO976bf/files/insurance.csv","firestoreKey":"insurance.csv","name":"insurance.csv","description":null}],"firestorePath":null,"firestoreKey":null,"name":"Health Insurance Cost Prediction","description":""}],"versions":[{"id":2922791,"kernelVersionId":null,"isForkParent":false,"isNotebook":true,"languageName":"Python","lastRunTime":"2018-03-25T19:24:17.597Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":2,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"sha256:61cc9a44d41232285d1e8e2cd3011599c03109845d69a1d0702aa211b4428fba","dockerImageName":"gcr.io/kaggle-images/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":10.4942046268843,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Health insurance cost prediction - EDA","url":"/faizanurrahman/health-insurance-cost-prediction-eda?scriptVersionId=2922791","versionNumber":3,"hasVersionNumber":true,"isRedacted":false,"versionAuthor":null},{"id":2922763,"kernelVersionId":null,"isForkParent":false,"isNotebook":true,"languageName":"Python","lastRunTime":"2018-03-25T19:20:37.527Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":0,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"sha256:61cc9a44d41232285d1e8e2cd3011599c03109845d69a1d0702aa211b4428fba","dockerImageName":"gcr.io/kaggle-images/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":10.4347404180007,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Kernel6c79289aeb","url":"/faizanurrahman/health-insurance-cost-prediction-eda?scriptVersionId=2922763","versionNumber":2,"hasVersionNumber":true,"isRedacted":false,"versionAuthor":null},{"id":2922751,"kernelVersionId":null,"isForkParent":false,"isNotebook":true,"languageName":"Python","lastRunTime":"2018-03-25T19:19:27.417Z","linesChangedFromPrevious":0,"linesDeletedFromPrevious":0,"linesInsertedFromPrevious":52,"outputFilesTotalSizeBytes":0,"runInfo":{"dockerfileUrl":"https://github.com/Kaggle/docker-python/blob/master/Dockerfile","dockerHubUrl":"https://registry.hub.docker.com/u/kaggle/python/","dockerImageId":"sha256:61cc9a44d41232285d1e8e2cd3011599c03109845d69a1d0702aa211b4428fba","dockerImageName":"gcr.io/kaggle-images/python","exitCode":0,"failureMessage":"","isValidStatus":true,"runTimeSeconds":11.0494197041262,"succeeded":true,"timeoutExceeded":false,"usedAllSpace":false},"status":"complete","title":"Kernel6c79289aeb","url":"/faizanurrahman/health-insurance-cost-prediction-eda?scriptVersionId=2922751","versionNumber":1,"hasVersionNumber":true,"isRedacted":false,"versionAuthor":null}],"categories":{"categories":[],"type":"script"},"submitToCompetitionInfo":null,"downloadAllFilesUrl":"/kernels/svzip/2922791","submission":null,"menuLinks":[{"href":"/faizanurrahman/health-insurance-cost-prediction-eda/notebook","text":"Notebook","title":"Notebook","tab":"notebook","count":null,"showZeroCountExplicitly":false,"reportEventCategory":null,"reportEventType":null},{"href":"/faizanurrahman/health-insurance-cost-prediction-eda/code","text":"Code","title":"Code","tab":"code","count":null,"showZeroCountExplicitly":false,"reportEventCategory":null,"reportEventType":null},{"href":"/faizanurrahman/health-insurance-cost-prediction-eda/data","text":"Data","title":"Data","tab":"data","count":1,"showZeroCountExplicitly":false,"reportEventCategory":null,"reportEventType":null},{"href":"/faizanurrahman/health-insurance-cost-prediction-eda/log","text":"Log","title":"Log","tab":"log","count":null,"showZeroCountExplicitly":false,"reportEventCategory":null,"reportEventType":null},{"href":"/faizanurrahman/health-insurance-cost-prediction-eda/comments","text":"Comments","title":"Comments","tab":"comments","count":0,"showZeroCountExplicitly":true,"reportEventCategory":null,"reportEventType":null}],"rightMenuLinks":[],"callToAction":{"href":"/kernels/fork-version/2922791","text":"Fork Notebook","title":"Fork Notebook","tab":null,"count":null,"showZeroCountExplicitly":false,"reportEventCategory":"kernels","reportEventType":"anonymousKernelForkCreation"},"voteButton":{"totalVotes":0,"hasAlreadyVotedUp":false,"hasAlreadyVotedDown":false,"canUpvote":true,"canDownvote":false,"voteUpUrl":"/kernels/vote?id=725251","voteDownUrl":null,"voters":[],"currentUserInfo":null,"showVoters":true,"alwaysShowVoters":true},"parentDataSource":null,"parentName":"Health Insurance Cost Prediction","parentUrl":"/annetxu/health-insurance-cost-prediction","thumbnailImageUrl":"https://storage.googleapis.com/kaggle-datasets-images/new-version-temp-images/default-backgrounds-43.png-1592799/dataset-thumbnail.png","canWrite":false,"canAdminister":false,"datasetHidden":false,"currentUserHasForked":false,"forkParentIsRedacted":false,"forkDiffLinesChanged":0,"forkDiffLinesDeleted":0,"forkDiffLinesInserted":0,"forkDiffUrl":null,"forkParentAuthorDisplayName":null,"forkParentAuthorUrl":null,"forkParentTitle":null,"forkParentUrl":null,"canSeeDataExplorerV2":true,"canSeeInnerTableOfContents":true,"simplifiedViewer":false,"kernelOutputDataset":null});performance && performance.mark && performance.mark("KernelViewer.componentCouldBootstrap");</script>
+
+<form action="/faizanurrahman/health-insurance-cost-prediction-eda" id="__AjaxAntiForgeryForm" method="post"><input name="X-XSRF-TOKEN" type="hidden" value="CfDJ8LdUzqlsSWBPr4Ce3rb9VL9AvYOCDKjMxH3MoSFVpcjqdLJCY_ojNVY9nV-YO2mt6JBQkM29f2hh0neQCiufzcUK_MCn0HPBfcpOeI8AqZ8HK8Ber1HxJOsgCuBzvAoPxoOQ7yRd2wekpit_F39c9yk" /></form>
+<script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX", "TeX"],
+    linebreaks: {
+    automatic: true
+    },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+    inlineMath: [["\\(", "\\)"], ["\\\\(", "\\\\)"]],
+    displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno"
+    },
+    TeX: {
+    noUndefined: {
+    attributes: {
+    mathcolor: "red",
+    mathbackground: "#FFEEEE",
+    mathsize: "90%"
+    }
+    }
+    },
+    Macros: {
+    href: "{}"
+    },
+    skipStartupTypeset: true,
+    messageStyle: "none"
+    });
+</script>
+<script nonce="GTnUmxmyRPqSPpcft2RA3A==" type="text/javascript" async crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    </div>
+
+        <div class="site-layout__footer">
+            <footer class="site-footer">
+    <div class="site-footer__content">
+        <div class="site-footer__copyright">
+            <span>&copy; 2019 Kaggle Inc</span>
+        </div>
+        <nav class="site-footer__nav">
+            <a href="/team">Our Team</a>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/contact">Contact/Support</a>
+        </nav>
+        <nav class="site-footer__social">
+            <div data-component-name="SocialIcons" style="display: flex; flex-direction: column; flex: 1 0 auto;"></div><script nonce="GTnUmxmyRPqSPpcft2RA3A==">var Kaggle=window.Kaggle||{};Kaggle.State=Kaggle.State||[];Kaggle.State.push();performance && performance.mark && performance.mark("SocialIcons.componentCouldBootstrap");</script>
+        </nav>
+    </div>
+</footer>
+
+        </div>
+</div>
+
+
+
+    </main>
+</body>
+</html>

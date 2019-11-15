@@ -1,0 +1,388 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Apprentissage, réseaux de neurones et modèles graphiques (RCP209) &#8212; Cours Cnam RCP209</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Préambule" href="preambule.html" />
+<link rel="stylesheet"
+href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+      <link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+  .toggler {
+  }
+  #button {
+    padding: .5em 1em;
+    text-decoration: none;
+  }
+  #effect {
+  }
+  </style>
+  <script>
+  $(function() {
+    // run the currently selected effect
+    function runEffect() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // most effect types need no options passed by default
+      var options = {};
+      // some effects have required parameters
+      if ( selectedEffect === "scale" ) {
+        options = { percent: 0 };
+      } else if ( selectedEffect === "size" ) {
+        options = { to: { width: 200, height: 60 } };
+      }
+ 
+      // run the effect
+      $( "#effect" ).toggle( selectedEffect, options, 500 );
+    };
+ 
+    // set effect from select menu value
+    $( "#button" ).click(function() {
+      runEffect();
+    });
+  })
+  </script>
+  <script>
+  $(function() {
+        $( ".tabs" ).tabs();
+          });
+  </script>
+
+  <script type="text/javascript" src="_static/dynsite.js"></script>
+
+
+  </head>
+  <body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="#">Cours Cnam RCP209</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="preambule.html" title="Préambule"
+             accesskey="N">suivant</a> |
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="apprentissage-reseaux-de-neurones-et-modeles-graphiques-rcp209">
+<h1>Apprentissage, réseaux de neurones et modèles graphiques (RCP209)<a class="headerlink" href="#apprentissage-reseaux-de-neurones-et-modeles-graphiques-rcp209" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="preambule.html">Préambule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#ouverture">Ouverture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#positionnement-de-rcp209-dans-les-parcours">Positionnement de RCP209 dans les parcours</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#conditions-d-acces">Conditions d’accès</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#organisation-de-lenseignement">Organisation de l’enseignement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#travail-necessaire-pour-valider-l-ue">Travail nécessaire pour valider l’UE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#liens-indispensables">Liens indispensables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#ressources">Ressources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preambule.html#liens-externes">Liens externes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html">Cours - Introduction à l’apprentissage supervisé</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#sujet-du-cours">Sujet du cours</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#objectifs-et-contenu-de-l-enseignement">Objectifs et contenu de l’enseignement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#modelisation-decisionnelle">Modélisation décisionnelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#types-de-problemes-de-decision">Types de problèmes de décision</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#modeles-decisionnels">Modèles décisionnels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#modelisation-a-partir-de-donnees">Modélisation à partir de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#apprentissage-et-generalisation">Apprentissage et généralisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#modelisation-a-partir-de-donnees-un-cadre-plus-precis">Modélisation à partir de données : un cadre plus précis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#quelques-notations-et-definitions">Quelques notations et définitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#choix-d-une-fonction-de-perte">Choix d’une fonction de perte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#choix-des-familles-parametriques">Choix des familles paramétriques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#estimation-du-modele">Estimation du modèle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#comment-mesurer-la-capacite">Comment mesurer la capacité ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#minimisation-du-risque-empirique-regularise-mrer">Minimisation du risque empirique régularisé (MRER)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#minimisation-du-risque-structurel-mrs">Minimisation du risque structurel (MRS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#comment-minimiser-le-risque-empirique-regularise">Comment minimiser le risque empirique (régularisé) ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#modelisation-decisionnelle-que-faut-il-retenir">Modélisation décisionnelle : que faut-il retenir ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#evaluation-de-modeles">Évaluation de modèles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#la-validation-croisee">La validation croisée</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#courbes-roc">Courbes ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#selection-de-modeles">Sélection de modèles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#grid-search-pour-le-choix-des-hyperparametres"><em>Grid search</em> pour le choix des hyperparamètres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#randomized-parameter-optimization"><em>Randomized parameter optimization</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html#evaluation-et-selection-de-modeles-que-faut-il-retenir">Évaluation et sélection de modèles : que faut-il retenir ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tpIntroductionApprentissageSupervise.html">Travaux pratiques - Introduction à l’apprentissage supervisé</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpIntroductionApprentissageSupervise.html#classement-avec-modeles-lineaires-et-pmc">Classement avec modèles linéaires et PMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpIntroductionApprentissageSupervise.html#regression-avec-modeles-lineaires-et-pmc">Régression avec modèles linéaires et PMC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tpEvaluationSelectionModeles.html">Travaux pratiques - Evaluation et sélection de modèles décisionnels</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpEvaluationSelectionModeles.html#estimation-des-performances-par-validation-croisee">Estimation des performances par validation croisée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpEvaluationSelectionModeles.html#recherche-des-meilleures-valeurs-pour-les-hyperparametres">Recherche des meilleures valeurs pour les hyperparamètres</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursArbresDecision.html">Cours - Arbres de décision</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#objectifs-et-contenu-de-l-enseignement">Objectifs et contenu de l’enseignement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#arbres-de-decision-motivation-definitions">Arbres de décision (motivation, définitions)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursArbresDecision.html#definitions">Définitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursArbresDecision.html#arbres-de-decision-exemples">Arbres de décision : exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#apprentissage-avec-arbres-de-decision">Apprentissage avec arbres de décision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#implementation-id3-iterative-dichotomiser-3">Implémentation : ID3 (Iterative Dichotomiser 3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="coursArbresDecision.html#problemes-de-l-algorithme-id3">Problèmes de l’algorithme ID3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursArbresDecision.html#c4-5-iterative-dichotomiser-4-5">C4.5 (Iterative Dichotomiser 4.5)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coursArbresDecision.html#c5-0-iterative-dichotomiser-5-0">C5.0 (Iterative Dichotomiser 5.0)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#cart-arbres-de-classification-et-regression">CART : Arbres de classification et régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#elagage-et-gestion-de-donnees-manquantes">Élagage et gestion de données manquantes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#extensions">Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coursArbresDecision.html#references-livres-et-articles">Références livres et articles</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tpArbresDecision.html">Travaux pratiques - Arbres de décision</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpArbresDecision.html#arbres-de-decision">Arbres de décision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpArbresDecision.html#arbres-pour-la-classification">Arbres pour la classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpArbresDecision.html#classification-sur-le-dataset-iris">Classification sur le dataset Iris</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpArbresDecision.html#affichage-de-la-surface-de-decision">Affichage de la surface de décision</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tpArbresDecision.html#arbres-de-decision-pour-la-regression">Arbres de décision pour la régression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursForetsAleatoires.html">Cours - Forêts Aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpForetsAleatoires.html">Travaux pratiques - Forets aléatoires</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpForetsAleatoires.html#methodes-d-agregation">Méthodes d’agrégation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpForetsAleatoires.html#bagging">Bagging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpForetsAleatoires.html#forets-aleatoires">Forets aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpForetsAleatoires.html#boosting">Boosting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursSVMLineaires.html">Cours - SVM lineaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpSVMLineaires.html">Travaux pratiques - SVM Lineaires</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpSVMLineaires.html#machines-a-vecteurs-de-support-lineaires">Machines à vecteurs de support linéaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpSVMLineaires.html#liblinear-et-libsvm">LibLinear et libSVM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpSVMLineaires.html#libsvm">LibSVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpSVMLineaires.html#svm-toy">SVM-toy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tpSVMLineaires.html#scikit-learn">Scikit-learn</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursMethodesNoyaux.html">Cours - Méthodes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpMethodesNoyaux.html">Travaux pratiques - Méthodes à noyaux</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpMethodesNoyaux.html#machines-a-vecteurs-de-support-svm">Machines à vecteurs de support (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpMethodesNoyaux.html#libsvm">LibSVM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpMethodesNoyaux.html#svm-toy">SVM-toy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tpMethodesNoyaux.html#scikit-learn">Scikit-learn</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursAlgosNoyaux.html">Cours - Algorithmes à noyaux et applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpAlgosNoyaux.html">Travaux pratiques - Algorithmes à noyaux</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpAlgosNoyaux.html#one-class-svm-ocsvm">One Class SVM (OCSVM)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpAlgosNoyaux.html#libsvm">LibSVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpAlgosNoyaux.html#svm-toy">SVM-toy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpAlgosNoyaux.html#scikit-learn">Scikit-learn</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tpAlgosNoyaux.html#svm-pour-la-regression">SVM pour la regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpAlgosNoyaux.html#id1">SVM-toy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpAlgosNoyaux.html#id2">Scikit-learn</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep1.html">Cours - Introduction à l’apprentissage profond</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning1.html">Travaux pratiques - Introduction à l’apprentissage profond (deep learning)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning1.html#exercice-0-visualisation-de-quelques-images-de-la-base">Exercice 0 : visualisation de quelques images de la base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning1.html#exercice-1-regression-logistique">Exercice 1 : Régression Logistique</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning1.html#modele-de-prediction">Modèle de prédiction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning1.html#formulation-du-probleme-d-apprentissage">Formulation du problème d’apprentissage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning1.html#optimisation-du-modele">Optimisation du modèle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning1.html#implementation-de-l-apprentissage">Implémentation de l’apprentissage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep2.html">Cours - Réseaux convolutifs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning2.html">Travaux pratiques - Perceptron multi-couche</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning2.html#exercice-1-prediction-avec-un-perceptron-forward">Exercice 1 : Prédiction avec un Perceptron (Forward)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning2.html#exercice-2-apprentissage-du-perceptron-backward">Exercice 2 : Apprentissage du Perceptron (Backward)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep3.html">Cours - Apprentissage profond: perspective historique</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning3.html">Travaux pratiques - Deep Learning avec Keras</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning3.html#exercice-1-regression-logistique-avec-keras">Exercice 1 : Régression Logistique avec <code class="docutils literal"><span class="pre">Keras</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning3.html#exercice-2-perceptron-avec-keras">Exercice 2 : Perceptron avec Keras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning3.html#exercice-3-reseaux-de-neurones-convolutifs-avec-keras">Exercice 3 : Réseaux de neurones convolutifs avec Keras</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep4.html">Cours - Réseaux convolutifs et visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning4.html">Travaux pratiques - Deep Learning et Manifold Untangling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning4.html#exercice-1-visualisation-avec-t-sne">Exercice 1 : Visualisation avec t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning4.html#exercice-2-visualisation-et-metrique-de-separation-des-classes">Exercice 2 : Visualisation et métrique de séparation des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning4.html#exercice-3-separabilite-des-classes-et-representations-internes-des-reseaux-de-neurones">Exercice 3 : Séparabilité des classes et représentations internes des réseaux de neurones</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep5.html">Cours - Réseaux convolutifs Avancés</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning5.html">Travaux pratiques - Deep Learning : transfert et fine-tuning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning5.html#exercice-1-transfert">Exercice 1 : Transfert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning5.html#exercice-2-fine-tuning">Exercice 2 : Fine-tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning5.html#exercice-3-transfert-et-fine-tuning-sur-notmnist">Exercice 3 : Transfert et Fine-tuning sur notMNIST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep6.html">Cours - Prédiction Structurée et Modèles Graphiques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning6.html">Travaux pratiques - Prédiction Structurée</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning6.html#exercice-0-modele-generique-de-prediction-structuree">Exercice 0 : Modèle générique de prédiction structurée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning6.html#exercice-1-instanciation-en-classification-multi-classes">Exercice 1 : Instanciation en classification multi-classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning6.html#exercice-2-performances-du-modele-du-la-base-mnist">Exercice 2 : Performances du modèle du la base MNIST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep7.html">Cours - Prédiction Structurée et Modèles Graphiques (2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning7.html">Travaux pratiques - Ordonnancement Structuré</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning7.html#exercice-0-modele-baseline-et-mesure-d-average-precision-ap">Exercice 0 : Modèle baseline et mesure d’Average Precision (AP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning7.html#exercice-1-instanciation-de-prediction-structuree-pour-du-ranking">Exercice 1 : Instanciation de prédiction structurée pour du ranking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning7.html#inference">Inférence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning7.html#classe-sranking">Classe <code class="docutils literal"><span class="pre">SRanking</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning7.html#mise-en-place-de-la-fonction-psi">Mise en place de la fonction <code class="docutils literal"><span class="pre">psi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tpDeepLearning7.html#mise-en-place-de-la-fonction-lai">Mise en place de la fonction <code class="docutils literal"><span class="pre">lai</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep8.html">Cours - Deep Learning : Nouveaux Problèmes et Perspectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning8.html">Travaux pratiques - Ordonnancement Structuré (2) : application et évaluation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tpDeepLearning8.html#exercice-2-entrainement-du-modele-et-evaluation-des-performances">Exercice 2 : Entraînement du modèle et évaluation des performances</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table des Matières</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="preambule.html">Préambule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html">Cours - Introduction à l’apprentissage supervisé</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpIntroductionApprentissageSupervise.html">Travaux pratiques - Introduction à l’apprentissage supervisé</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpEvaluationSelectionModeles.html">Travaux pratiques - Evaluation et sélection de modèles décisionnels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursArbresDecision.html">Cours - Arbres de décision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpArbresDecision.html">Travaux pratiques - Arbres de décision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursForetsAleatoires.html">Cours - Forêts Aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpForetsAleatoires.html">Travaux pratiques - Forets aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursSVMLineaires.html">Cours - SVM lineaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpSVMLineaires.html">Travaux pratiques - SVM Lineaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursMethodesNoyaux.html">Cours - Méthodes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpMethodesNoyaux.html">Travaux pratiques - Méthodes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursAlgosNoyaux.html">Cours - Algorithmes à noyaux et applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpAlgosNoyaux.html">Travaux pratiques - Algorithmes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep1.html">Cours - Introduction à l’apprentissage profond</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning1.html">Travaux pratiques - Introduction à l’apprentissage profond (deep learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep2.html">Cours - Réseaux convolutifs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning2.html">Travaux pratiques - Perceptron multi-couche</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep3.html">Cours - Apprentissage profond: perspective historique</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning3.html">Travaux pratiques - Deep Learning avec Keras</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep4.html">Cours - Réseaux convolutifs et visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning4.html">Travaux pratiques - Deep Learning et Manifold Untangling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep5.html">Cours - Réseaux convolutifs Avancés</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning5.html">Travaux pratiques - Deep Learning : transfert et fine-tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep6.html">Cours - Prédiction Structurée et Modèles Graphiques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning6.html">Travaux pratiques - Prédiction Structurée</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep7.html">Cours - Prédiction Structurée et Modèles Graphiques (2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning7.html">Travaux pratiques - Ordonnancement Structuré</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep8.html">Cours - Deep Learning : Nouveaux Problèmes et Perspectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning8.html">Travaux pratiques - Ordonnancement Structuré (2) : application et évaluation</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Recherche</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="preambule.html" title="Préambule"
+              >suivant</a> |
+            <a href="genindex.html" title="Index général"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/index.rst.txt"
+                rel="nofollow">Montrer le code source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Michel Crucianu, Marin Ferecatu, Nicolas Thome - Cnam.
+      Mis à jour le oct. 20, 2017.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

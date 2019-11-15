@@ -1,0 +1,517 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Travaux pratiques - Evaluation et sélection de modèles décisionnels &#8212; Cours Cnam RCP209</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Cours - Arbres de décision" href="coursArbresDecision.html" />
+    <link rel="prev" title="Travaux pratiques - Introduction à l’apprentissage supervisé" href="tpIntroductionApprentissageSupervise.html" />
+<link rel="stylesheet"
+href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+      <link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+  .toggler {
+  }
+  #button {
+    padding: .5em 1em;
+    text-decoration: none;
+  }
+  #effect {
+  }
+  </style>
+  <script>
+  $(function() {
+    // run the currently selected effect
+    function runEffect() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // most effect types need no options passed by default
+      var options = {};
+      // some effects have required parameters
+      if ( selectedEffect === "scale" ) {
+        options = { percent: 0 };
+      } else if ( selectedEffect === "size" ) {
+        options = { to: { width: 200, height: 60 } };
+      }
+ 
+      // run the effect
+      $( "#effect" ).toggle( selectedEffect, options, 500 );
+    };
+ 
+    // set effect from select menu value
+    $( "#button" ).click(function() {
+      runEffect();
+    });
+  })
+  </script>
+  <script>
+  $(function() {
+        $( ".tabs" ).tabs();
+          });
+  </script>
+
+  <script type="text/javascript" src="_static/dynsite.js"></script>
+
+
+  </head>
+  <body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">Cours Cnam RCP209</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="tpIntroductionApprentissageSupervise.html" title="Travaux pratiques - Introduction à l’apprentissage supervisé"
+             accesskey="P">précédent</a> |
+          <a href="coursArbresDecision.html" title="Cours - Arbres de décision"
+             accesskey="N">suivant</a> |
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="travaux-pratiques-evaluation-et-selection-de-modeles-decisionnels">
+<span id="chap-tpevaluationselectionmodeles"></span><h1>Travaux pratiques - Evaluation et sélection de modèles décisionnels<a class="headerlink" href="#travaux-pratiques-evaluation-et-selection-de-modeles-decisionnels" title="Lien permanent vers ce titre">¶</a></h1>
+<p><strong>L’objectif</strong> de cette séance de travaux pratiques est de montrer l’utilisation des techniques de validation croisée pour l’évaluation et la comparaison de modèles décisionnels, ainsi que des méthodes de recherche de valeurs pour les hyper-paramètres (comme le coefficient de régularisation).</p>
+<p>Références externes utiles :</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://docs.scipy.org/doc/numpy/user/index.html">Documentation NumPy</a></li>
+<li><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/">Documentation SciPy</a></li>
+<li><a class="reference external" href="http://matplotlib.org/">Documentation MatPlotLib</a></li>
+<li><a class="reference external" href="http://scikit-learn.org/stable/index.html">Site scikit-learn</a></li>
+<li><a class="reference external" href="https://www.python.org">Site langage python</a></li>
+</ul>
+</div></blockquote>
+<div class="section" id="estimation-des-performances-par-validation-croisee">
+<h2>Estimation des performances par validation croisée<a class="headerlink" href="#estimation-des-performances-par-validation-croisee" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Afin d’illustrer l’utilisation de la validation croisée, nous considérons un problème de classement similaire à celui examiné lors de la précédente séance. Nous générons plus de données avec information de supervision et nous les partitionnons en un ensemble d’apprentissage et un ensemble de test.</p>
+<p>Nous employons des PMC avec une seule couche cachée de 100 neurones et une valeur <span class="math">\(\alpha = 1\)</span> pour la constante de régularisation (pondération du terme d’oubli ou <em>weight decay</em>).</p>
+<p>La validation croisée sera utilisée pour estimer les performances de généralisation <em>à partir de l’ensemble d’apprentissage</em> et ensuite cette estimation sera comparée à l’estimation obtenue sur l’ensemble de test mis de côté au départ. Les explications sur la validation croisée et sa mise en œuvre dans Scikit-learn se trouvent <a class="reference external" href="http://scikit-learn.org/stable/modules/cross_validation.html">ici</a>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># importations</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>    <span class="c1"># si pas encore fait</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>  <span class="c1"># mode interactif facilite utilisation figures multiples</span>
+
+<span class="c1"># définir matrices de rotation et de dilatation</span>
+<span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.94</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.34</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.34</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">]])</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+
+<span class="c1"># générer données classe 1</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">c1d</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sca</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span>
+
+<span class="c1"># générer données classe 2</span>
+<span class="n">c2d1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">c2d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">c2d3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">c2d4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">c1d</span><span class="p">,</span> <span class="n">c2d1</span><span class="p">,</span> <span class="n">c2d2</span><span class="p">,</span> <span class="n">c2d3</span><span class="p">,</span> <span class="n">c2d4</span><span class="p">))</span>
+
+<span class="c1"># générer étiquettes de classe</span>
+<span class="n">l1c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">l2c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">l1c</span><span class="p">,</span> <span class="n">l2c</span><span class="p">))</span>
+
+<span class="c1"># découpage initial en données d&#39;apprentissage et données de test</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Afin d’afficher les données, nous nous servirons du mode interactif qui ne bloque pas la console python. On entre en mode interactif avec <code class="docutils literal"><span class="pre">plt.ion()</span></code> et, dans ce mode, <code class="docutils literal"><span class="pre">plt.show()</span></code> n’est plus nécessaire. On quitte ce mode avec <code class="docutils literal"><span class="pre">plt.ioff()</span></code>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="nb">cmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X_train</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="nb">cmp</span><span class="p">[</span><span class="n">y_train</span><span class="p">],</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="nb">cmp</span><span class="p">[</span><span class="n">y_test</span><span class="p">])</span>
+
+<span class="c1"># emploi de PMC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># KFold pour différentes valeurs de k</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="c1"># valeurs de k</span>
+<span class="n">kcvfs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<span class="c1"># préparation des listes pour stocker les résultats</span>
+<span class="n">kcvscores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="n">kcvscores_std</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">kcvf</span> <span class="ow">in</span> <span class="n">kcvfs</span><span class="p">:</span>    <span class="c1"># pour chaque valeur de k</span>
+  <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">kcvf</span><span class="p">)</span>
+  <span class="n">these_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  <span class="c1"># apprentissage puis évaluation d&#39;un modèle sur chaque split</span>
+  <span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_train</span><span class="p">):</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">])</span>
+    <span class="n">these_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]))</span>
+  <span class="c1"># calcul de la moyenne et de l&#39;écart-type des performances obtenues</span>
+  <span class="n">kcvscores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">these_scores</span><span class="p">))</span>
+  <span class="n">kcvscores_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">these_scores</span><span class="p">))</span>
+
+<span class="c1"># création de np.array à partir des listes</span>
+<span class="n">kcvscores</span><span class="p">,</span> <span class="n">kcvscores_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kcvscores</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kcvscores_std</span><span class="p">)</span>
+
+<span class="c1"># affichage performance moyenne +- 1 écart-type pour chaque k</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="o">+</span><span class="n">kcvscores_std</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="o">-</span><span class="n">kcvscores_std</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Que constatez-vous en examinant ce graphique ? Ajoutez des valeurs pour <em>k</em> (par ex. 40, 100, attention ce sera plus long…) et examinez de nouveau le graphique.</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p class="last">On constate que, lors de l’augmentation de <em>k</em>, la performance moyenne se stabilise mais la variance augmente. Cela s’explique par le fait que, lorsque la valeur de <em>k</em> augmente, l’évaluation est faite (c’est à dire la moyenne de l’erreur est calculée) sur de moins en moins de données. La variance augmente encore pour des valeurs supérieures de <em>k</em>.</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Pour chaque modèle appris par validation croisée <em>k-fold</em>, ajoutez son évaluation sur les données de test mises de côté au départ <code class="docutils literal"><span class="pre">X_test,</span> <span class="pre">y_test</span></code>. Affichez les courbes sur le même graphique. Que constatez-vous ?</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p>On ajoute des listes pour stocker ces résultats et on affiche leurs contenus :</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">kcvscores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="n">kcvscores_std</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="n">testscores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="n">testscores_std</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">kcvf</span> <span class="ow">in</span> <span class="n">kcvfs</span><span class="p">:</span>    <span class="c1"># pour chaque valeur de k</span>
+  <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">kcvf</span><span class="p">)</span>
+  <span class="n">these_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  <span class="n">these_test_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  <span class="c1"># apprentissage puis évaluation d&#39;un modèle sur chaque split</span>
+  <span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_train</span><span class="p">):</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">])</span>
+    <span class="n">these_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]))</span>
+    <span class="n">these_test_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+  <span class="c1"># calcul de la moyenne et de l&#39;écart-type des performances obtenues</span>
+  <span class="n">kcvscores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">these_scores</span><span class="p">))</span>
+  <span class="n">kcvscores_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">these_scores</span><span class="p">))</span>
+  <span class="n">testscores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">these_test_scores</span><span class="p">))</span>
+  <span class="n">testscores_std</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">these_test_scores</span><span class="p">))</span>
+
+<span class="c1"># création de np.array à partir des listes</span>
+<span class="n">kcvscores</span><span class="p">,</span> <span class="n">kcvscores_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kcvscores</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kcvscores_std</span><span class="p">)</span>
+<span class="n">testscores</span><span class="p">,</span> <span class="n">testscores_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">testscores</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">testscores_std</span><span class="p">)</span>
+
+<span class="c1"># affichage performance moyenne +- 1 écart-type pour chaque k</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="o">+</span><span class="n">kcvscores_std</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">kcvscores</span><span class="o">-</span><span class="n">kcvscores_std</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">testscores</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">testscores</span><span class="o">+</span><span class="n">testscores_std</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kcvfs</span><span class="p">,</span> <span class="n">testscores</span><span class="o">-</span><span class="n">testscores_std</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">Les résultats montrent que l’estimation de l’erreur de généralisation par validation croisée sur les données d’apprentissage (courbes en bleu) reste en général optimiste par rapport à l’estimation sur des données de test supplémentaires (courbes en vert). Aussi, la variance des estimations sur les données de test est comparativement faible car ces données sont ici aussi volumineuses que les données d’apprentissage (<code class="docutils literal"><span class="pre">test_size=0.5</span></code>).</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Réalisez l’estimation des performances en utilisant la <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html#sklearn.model_selection.LeaveOneOut">validation croisée leave one out (LOO)</a>. Que constatez-vous en comparant les résultats de <em>k-fold</em> et de <em>leave one out</em> ?</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># LOO</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">LeaveOneOut</span>
+<span class="n">loo</span> <span class="o">=</span> <span class="n">LeaveOneOut</span><span class="p">()</span>
+<span class="n">loo</span><span class="o">.</span><span class="n">get_n_splits</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">these_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">loo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_train</span><span class="p">):</span>
+  <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">train_idx</span><span class="p">])</span>
+  <span class="n">these_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">these_scores</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">these_scores</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">On constate que l’écart-type est bien plus élevé pour l’estimation <em>leave one out</em> que pour les estimations <em>k-fold</em> (pour toutes les valeurs considérées ici pour <em>k</em>).</p>
+</div>
+</div>
+<div class="section" id="recherche-des-meilleures-valeurs-pour-les-hyperparametres">
+<h2>Recherche des meilleures valeurs pour les hyperparamètres<a class="headerlink" href="#recherche-des-meilleures-valeurs-pour-les-hyperparametres" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Nous appliquerons d’abord la recherche systématique <em>grid search</em> pour trouver les meilleures valeurs de deux hyperparamètres pour les PMC dans la même tâche de classement que précédemment. Ces hyperparamètres sont le nombre de neurones dans l’unique couche cachée du PMC et la valeur de la constante de régularisation (par <em>weight decay</em>), <span class="math">\(\alpha\)</span>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># importations</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="c1"># mode interactif</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>    <span class="c1"># si ce n&#39;est déjà fait</span>
+
+<span class="c1"># définir matrices de rotation et de dilatation</span>
+<span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.94</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.34</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.34</span><span class="p">,</span> <span class="mf">0.94</span><span class="p">]])</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+
+<span class="c1"># générer données classe 1</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">c1d</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sca</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">)</span>
+
+<span class="c1"># générer données classe 2</span>
+<span class="n">c2d1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">c2d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">c2d3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">c2d4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">c1d</span><span class="p">,</span> <span class="n">c2d1</span><span class="p">,</span> <span class="n">c2d2</span><span class="p">,</span> <span class="n">c2d3</span><span class="p">,</span> <span class="n">c2d4</span><span class="p">))</span>
+
+<span class="c1"># générer étiquettes de classe</span>
+<span class="n">l1c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">l2c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">l1c</span><span class="p">,</span> <span class="n">l2c</span><span class="p">))</span>
+
+<span class="c1"># découpage initial en données d&#39;apprentissage et données de test</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># affichage des données d&#39;apprentissage et de test</span>
+<span class="nb">cmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X_train</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="nb">cmp</span><span class="p">[</span><span class="n">y_train</span><span class="p">],</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="nb">cmp</span><span class="p">[</span><span class="n">y_test</span><span class="p">])</span>
+
+<span class="c1"># emploi de PMC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Afin d’utiliser la <a class="reference external" href="http://scikit-learn.org/stable/modules/grid_search.html">recherche dans une grille</a> et la validation croisée pour comparer les modèles obtenus avce toutes les combinaisons de cvaleurs pour les hyperparamètres, il est nécessaire d’employer <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV">GridSearchCV</a>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Il est nécessaire d’indiquer dans un « dictionnaire » quels sont les hyperparamètres dont on souhaite explorer les valeurs et quelles sont les différentes valeurs à évaluer. Chaque entrée du dictionnaire consiste en une chaîne de caractères qui contient le nom de l’hyperparamètre tel qu’il est défini dans l’estimateur employé. Nous nous servirons ici de <code class="docutils literal"><span class="pre">MLPClassifier</span></code>, les noms des paramètres peuvent donc être trouvés dans <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier">la présentation de cette classe</a>. Nous considérons ici seulement deux paramètres, <code class="docutils literal"><span class="pre">hidden_layer_sizes</span></code> (nombre de neurones dans l’unique couche cachée) et <code class="docutils literal"><span class="pre">alpha</span></code> (la constante <span class="math">\(\alpha\)</span> de régularisation par <em>weight decay</em>).</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">tuned_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hidden_layer_sizes&#39;</span><span class="p">:[(</span><span class="mi">5</span><span class="p">,),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,),</span> <span class="p">(</span><span class="mi">150</span><span class="p">,),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,)],</span>
+                    <span class="s1">&#39;alpha&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Dans l’appel de <code class="docutils literal"><span class="pre">GridSearchCV</span></code> nous indiquons ensuite pour <code class="docutils literal"><span class="pre">MLPClassifier</span></code> le solveur à utiliser systématiquement (qui n’est pas celui par défaut), ensuite le dictionnaire avec les valeurs des  (hyper)paramètres à explorer et enfin le fait que c’est la validation croisée <em>k-fold</em> avec <span class="math">\(k=5\)</span> qui est employée pour comparer les différents modèles.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">),</span> <span class="n">tuned_parameters</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># exécution de grid search</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Scikit-learn exécute alors le programme suivant :</p>
+<blockquote>
+<div><ul class="simple">
+<li>à partir des listes de valeurs pour les différents (hyper)paramètres sont générées toutes les combinaisons de valeurs,</li>
+<li>pour chaque combinaison, les performances des modèles correspondants sont évaluées par validation croisée <em>5-fold</em> (appliquée uniquement sur les <strong>données d’apprentissage</strong> <code class="docutils literal"><span class="pre">X_train,</span> <span class="pre">y_train</span></code>),</li>
+<li>sont sélectionnées les valeurs des (hyper)paramètres correspondant aux meilleures performances de validation croisée,</li>
+<li>avec ces valeurs pour les (hyper)paramètres un nouvel apprentissage est réalisé avec la totalité des données de <code class="docutils literal"><span class="pre">X_train,</span> <span class="pre">y_train</span></code> (et non seulement <span class="math">\(\frac{k-1}{k}\)</span> <em>folds</em>).</li>
+</ul>
+</div></blockquote>
+<p>Les lignes suivantes permettent d’afficher les résultats : les paramètres du meilleur modèle avec <code class="docutils literal"><span class="pre">clf.best_params_</span></code>, ainsi que les résultats de validation croisée obtenus pour toutes les combinaisons de valeurs pour les (hyper)paramètres (<code class="docutils literal"><span class="pre">clf.cv_results_</span></code> donne accès à ces informations et à bien d’autres).</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">best_params_</span>
+
+<span class="n">n_hidden</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">alphas</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># affichage sous forme de wireframe des résultats des modèles évalués</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Neurones cachés&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Taux de bon classement&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Nous avons employé ici <code class="docutils literal"><span class="pre">plot_wireframe</span></code> car la lisibilité était meilleure qu’avec <code class="docutils literal"><span class="pre">plot_surface</span></code>.</p>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Combien de PMC sont appris au total dans cet exemple ?</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p class="last">Le nombre de combinaisons de (hyper)paramètres explorées est <code class="docutils literal"><span class="pre">len(tuned_parameters['hidden_layer_sizes'])</span> <span class="pre">*</span> <span class="pre">len(tuned_parameters['alpha'])</span></code> = 24. Pour chacune de ces combinaisons, <code class="docutils literal"><span class="pre">cv=5</span></code> indique que <span class="math">\(k = 5\)</span> PMC différents sont appris. Donc un total de 24 * 5 = 120.</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Quelle est la signification du paramètre <code class="docutils literal"><span class="pre">refit</span></code> de <code class="docutils literal"><span class="pre">GridSearchCV</span></code> ?</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p class="last">Comme indiqué dans la <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV">documentation</a>, si la valeur de ce paramètre est <code class="docutils literal"><span class="pre">True</span></code> (valeur par défaut) alors, une fois trouvées les meilleures valeurs pour les hyperparamètres, un nouveau modèle est appris avec ces valeurs-là sur la totalité des <span class="math">\(N\)</span> données d’apprentissage <code class="docutils literal"><span class="pre">X_train,</span> <span class="pre">y_train</span></code> (sans en exclure <span class="math">\(N/k\)</span>). Ce modèle est directement accessible dans l’attribut <code class="docutils literal"><span class="pre">.best_estimator_</span></code> et l’appel à <code class="docutils literal"><span class="pre">.predict()</span></code> sur l’instance de <code class="docutils literal"><span class="pre">GridSearchCV</span></code> (ici <code class="docutils literal"><span class="pre">clf</span></code>) permet de l’utiliser.</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Examinez de façon plus complète le contenu de <code class="docutils literal"><span class="pre">clf.cv_results_</span></code>.</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p class="last">Regarder les explications concernant cet attribut dans la <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV">documentation</a>.</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Evaluez le modèle sélectionné sur les données de test (<code class="docutils literal"><span class="pre">X_test,</span> <span class="pre">y_test</span></code>).</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<blockquote>
+<div>Le paramètres <code class="docutils literal"><span class="pre">refit</span></code> étant par défaut <code class="docutils literal"><span class="pre">True</span></code>, le modèle appris avec les meilleures valeurs pour les hyperparamètres est directement accessible via l’instance de <code class="docutils literal"><span class="pre">GridSearchCV</span></code> (ici <code class="docutils literal"><span class="pre">clf</span></code>), donc pour l’évaluer sur les données de test il suffit d’écrire</div></blockquote>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">L’aspect des résultats vous incite à affiner la grille ? Modifiez la grille et examinez les nouveaux résultats.</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<p class="last">Il est surtout intéressant d’affiner la grille autour des valeurs optimales pour les (hyper)paramètres, lues sur le graphique affiché ou obtenues avec <code class="docutils literal"><span class="pre">clf.best_params_</span></code>. Il faut définir une nouvelle grille plus fine autour de ce point et appeler de nouveau <code class="docutils literal"><span class="pre">GridSearchCV</span></code>.</p>
+</div>
+<div class="admonition-question admonition">
+<p class="first admonition-title">Question :</p>
+<p class="last">Utilisez la recherche aléatoire avec <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV">RandomizedSerchCV</a>. Le « budget » (nombre total de combinaisons évaluées) peut être fixé avec <code class="docutils literal"><span class="pre">n_iter</span></code>. Motivez le choix des lois employées pour le tirage des valeurs des deux (hyper)paramètres <code class="docutils literal"><span class="pre">hidden_layer_sizes</span></code> et <code class="docutils literal"><span class="pre">alpha</span></code>.</p>
+</div>
+<div class="admonition-correction admonition">
+<p class="first admonition-title">Correction :</p>
+<blockquote>
+<div>Les distributions peuvent être choisies dans <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/stats.html">cette liste de scipy.stats</a>. Les distributions continues doivent être préférées pour les paramètres continus (comme <span class="math">\(\alpha\)</span> ici) et les distributions discrètes pour les paramètres discrets (comme le nombre de neurones dans la couche cachée). Les distributions uniformes (<code class="docutils literal"><span class="pre">uniform</span></code>, respectivement <code class="docutils literal"><span class="pre">randint</span></code>) sont la solution de facilité. Si des connaissances <em>a priori</em> nous permettent de préférer certains points de l’espace des paramètres, alors nous pouvons choisir d’autres distributions qui privilégient les voisinages de ces points. L’appel à <code class="docutils literal"><span class="pre">RandomizedSerchCV</span></code> aura la forme</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">rlf</span> <span class="o">=</span> <span class="n">RandomizedSerchCV</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">),</span> <span class="n">param_distributions</span><span class="o">=</span><span class="n">param_distrib</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">où <code class="docutils literal"><span class="pre">param_distrib</span></code> est le dictionnaire qui précise les distributions employées pour les différents (hyper)paramètres et <code class="docutils literal"><span class="pre">n_iter=50</span></code> indique un « budget » de 50 essais.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table des Matières</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="preambule.html">Préambule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursIntroductionApprentissageSupervise.html">Cours - Introduction à l’apprentissage supervisé</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpIntroductionApprentissageSupervise.html">Travaux pratiques - Introduction à l’apprentissage supervisé</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Travaux pratiques - Evaluation et sélection de modèles décisionnels</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#estimation-des-performances-par-validation-croisee">Estimation des performances par validation croisée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recherche-des-meilleures-valeurs-pour-les-hyperparametres">Recherche des meilleures valeurs pour les hyperparamètres</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coursArbresDecision.html">Cours - Arbres de décision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpArbresDecision.html">Travaux pratiques - Arbres de décision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursForetsAleatoires.html">Cours - Forêts Aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpForetsAleatoires.html">Travaux pratiques - Forêts aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursSVMLineaires.html">Cours - SVM lineaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpSVMLineaires.html">Travaux pratiques - SVM Lineaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursMethodesNoyaux.html">Cours - Méthodes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpMethodesNoyaux.html">Travaux pratiques - Méthodes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursAlgosNoyaux.html">Cours - Algorithmes à noyaux et applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpAlgosNoyaux.html">Travaux pratiques - Algorithmes à noyaux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep1.html">Cours - Introduction à l’apprentissage profond</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning1.html">Travaux pratiques - Introduction à l’apprentissage profond (<em>deep learning</em>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep2.html">Cours - Réseaux convolutifs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning2.html">Travaux pratiques - Perceptron multi-couche</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep3.html">Cours - Apprentissage profond: perspective historique</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning3.html">Travaux pratiques - Deep Learning avec Keras</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep4.html">Cours - Réseaux convolutifs et visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning4.html">Travaux pratiques - Deep Learning et Manifold Untangling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep5.html">Cours - Réseaux convolutifs Avancés</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning5.html">Travaux pratiques - Deep Learning avancé</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning5.html#transfer-learning-et-fine-tuning-sur-voc2007">Transfer Learning et Fine-Tuning sur VOC2007</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep6.html">Cours - Prédiction Structurée et Modèles Graphiques</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning6.html">Travaux pratiques - Prédiction Structurée</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep7.html">Cours - Prédiction Structurée et Modèles Graphiques (2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning7.html">Travaux pratiques - Ordonnancement Structuré</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coursDeep8.html">Cours - Deep Learning : Nouveaux Problèmes et Perspectives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tpDeepLearning8.html">Travaux pratiques - Ordonnancement Structuré (2) : application et évaluation</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Recherche</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="tpIntroductionApprentissageSupervise.html" title="Travaux pratiques - Introduction à l’apprentissage supervisé"
+              >précédent</a> |
+            <a href="coursArbresDecision.html" title="Cours - Arbres de décision"
+              >suivant</a> |
+            <a href="genindex.html" title="Index général"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/tpEvaluationSelectionModeles.rst.txt"
+                rel="nofollow">Montrer le code source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Michel Crucianu, Marin Ferecatu, Nicolas Thome - Cnam.
+      Mis à jour le oct. 28, 2019.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

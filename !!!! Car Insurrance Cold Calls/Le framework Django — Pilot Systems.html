@@ -1,0 +1,1010 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-551192-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-551192-1');
+</script>
+
+    <title>Le framework Django — Pilot Systems</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/++theme++pilotwww/favicon.ico" />
+    <link rel="apple-touch-icon" href="/++theme++pilotwww/favicon.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/++theme++pilotwww/favicon-144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/++theme++pilotwww/favicon-114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/++theme++pilotwww/favicon-72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/++theme++pilotwww/favicon-57.png" />
+
+    <link rel="stylesheet" href="/++theme++pilotwww/style.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700|Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet" />
+
+
+
+  <meta content="summary" name="twitter:card" /><meta content="Le framework Django" name="twitter:title" /><meta content="Pilot Systems" property="og:site_name" /><meta content="Le framework Django" property="og:title" /><meta content="website" property="og:type" /><meta content="@pilotsystems" name="twitter:site" /><meta content="https://www.facebook.com/pilotsystems.net" property="og:article:publisher" /><meta content="Pour le développeur web qui veut asseoir sa réputation, le framework Django est la solution. Django encourage le développement rapide autant que la conception propre et pragmatique." name="twitter:description" /><meta content="https://www.pilotsystems.net/technologies/python/django" name="twitter:url" /><meta content="Pour le développeur web qui veut asseoir sa réputation, le framework Django est la solution. Django encourage le développement rapide autant que la conception propre et pragmatique." property="og:description" /><meta content="https://www.pilotsystems.net/technologies/python/django" property="og:url" /><meta content="https://www.pilotsystems.net/@@site-logo/logoPS_RS.png" name="twitter:image" /><meta content="https://www.pilotsystems.net/@@site-logo/logoPS_RS.png" property="og:image" /><meta content="image/png" property="og:image:type" /><meta name="description" content="Pour le développeur web qui veut asseoir sa réputation, le framework Django est la solution. Django encourage le développement rapide autant que la conception propre et pragmatique." /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Plone - http://plone.com" /><link rel="canonical" href="https://www.pilotsystems.net/technologies/python/django" /><link rel="search" href="https://www.pilotsystems.net/@@search" title="Recherche dans ce site" /><link rel="stylesheet" type="text/css" href="https://www.pilotsystems.net/++plone++production/++unique++2017-09-29T18:15:31.586549/default.css" data-bundle="production" /><link rel="stylesheet" type="text/css" href="https://www.pilotsystems.net/++plone++static/++unique++2017-08-31%2018%3A24%3A05.994954/plone-compiled.css" data-bundle="plone" /><link rel="stylesheet" type="text/css" href="https://www.pilotsystems.net/++plone++static/++unique++2017-09-29%2016%3A30%3A51.414045/plone-legacy-compiled.css" data-bundle="plone-legacy" /><script type="text/javascript">PORTAL_URL = 'https://www.pilotsystems.net';</script><script type="text/javascript" src="https://www.pilotsystems.net/++plone++production/++unique++2017-09-29T18:15:31.586549/default.js" data-bundle="production"></script><script type="text/javascript" src="https://www.pilotsystems.net/++plone++static/++unique++2017-08-31%2018%3A24%3A05.994954/plone-compiled.js" data-bundle="plone"></script><script type="text/javascript" src="https://www.pilotsystems.net/++plone++static/++unique++2017-09-29%2016%3A30%3A51.414045/plone-legacy-compiled.js" data-bundle="plone-legacy"></script></head>
+  <body id="visual-portal-wrapper" class="template-document_view portaltype-document site-portal section-technologies subsection-python subsection-python-django icons-on thumbs-on frontend viewpermission-view userrole-anonymous reviewstate-published" dir="ltr" data-i18ncatalogurl="https://www.pilotsystems.net/plonejsi18n" data-view-url="https://www.pilotsystems.net/technologies/python/django" data-pat-plone-modal="{&quot;actionOptions&quot;: {&quot;displayInModal&quot;: false}}" data-pat-tinymce="{&quot;loadingBaseUrl&quot;: &quot;https://www.pilotsystems.net/++plone++static/components/tinymce-builded/js/tinymce&quot;, &quot;relatedItems&quot;: {&quot;sort_order&quot;: &quot;ascending&quot;, &quot;vocabularyUrl&quot;: &quot;https://www.pilotsystems.net/@@getVocabulary?name=plone.app.vocabularies.Catalog&quot;, &quot;sort_on&quot;: &quot;sortable_title&quot;, &quot;folderTypes&quot;: [&quot;Folder&quot;, &quot;Large Plone Folder&quot;, &quot;Plone Site&quot;], &quot;rootPath&quot;: &quot;/www-pilot/portal&quot;}, &quot;prependToScalePart&quot;: &quot;/@@images/image/&quot;, &quot;linkAttribute&quot;: &quot;UID&quot;, &quot;prependToUrl&quot;: &quot;/resolveuid/&quot;, &quot;imageTypes&quot;: [&quot;Image&quot;], &quot;upload&quot;: {&quot;maxFiles&quot;: 1, &quot;currentPath&quot;: &quot;/technologies/python&quot;, &quot;initialFolder&quot;: &quot;c9273208f5124b8c9af71fb325240224&quot;, &quot;baseUrl&quot;: &quot;https://www.pilotsystems.net&quot;, &quot;uploadMultiple&quot;: false, &quot;relativePath&quot;: &quot;@@fileUpload&quot;, &quot;showTitle&quot;: false}, &quot;tiny&quot;: {&quot;templates&quot;: {}, &quot;content_css&quot;: &quot;https://www.pilotsystems.net/++plone++static/plone-compiled.css,https://www.pilotsystems.net/++plone++static/tinymce-styles.css,https://www.pilotsystems.net/++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css&quot;, &quot;external_plugins&quot;: {}, &quot;plugins&quot;: [&quot;plonelink&quot;, &quot;ploneimage&quot;, &quot;importcss&quot;, &quot;advlist&quot;, &quot;fullscreen&quot;, &quot;hr&quot;, &quot;lists&quot;, &quot;media&quot;, &quot;nonbreaking&quot;, &quot;noneditable&quot;, &quot;pagebreak&quot;, &quot;paste&quot;, &quot;preview&quot;, &quot;print&quot;, &quot;searchreplace&quot;, &quot;tabfocus&quot;, &quot;table&quot;, &quot;visualchars&quot;, &quot;wordcount&quot;, &quot;code&quot;], &quot;toolbar&quot;: &quot;ltr rtl | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage&quot;, &quot;menubar&quot;: [&quot;edit&quot;, &quot;table&quot;, &quot;format&quot;, &quot;toolsview&quot;, &quot;insert&quot;], &quot;importcss_file_filter&quot;: &quot;https://www.pilotsystems.net/++plone++static/tinymce-styles.css&quot;, &quot;menu&quot;: {&quot;insert&quot;: {&quot;items&quot;: &quot;link media | template hr&quot;, &quot;title&quot;: &quot;Insert&quot;}, &quot;format&quot;: {&quot;items&quot;: &quot;bold italic underline strikethrough superscript subscript | formats | removeformat&quot;, &quot;title&quot;: &quot;Format&quot;}, &quot;edit&quot;: {&quot;items&quot;: &quot;undo redo | cut copy paste pastetext | searchreplace textpattern selectall | textcolor&quot;, &quot;title&quot;: &quot;Edit&quot;}, &quot;table&quot;: {&quot;items&quot;: &quot;inserttable tableprops deletetable | cell row column&quot;, &quot;title&quot;: &quot;Table&quot;}, &quot;tools&quot;: {&quot;items&quot;: &quot;spellchecker charmap emoticons insertdatetime layer code&quot;, &quot;title&quot;: &quot;Tools&quot;}, &quot;view&quot;: {&quot;items&quot;: &quot;visualaid visualchars visualblocks preview fullpage fullscreen&quot;, &quot;title&quot;: &quot;View&quot;}}, &quot;browser_spellcheck&quot;: true, &quot;entity_encoding&quot;: &quot;raw&quot;, &quot;style_formats&quot;: [{&quot;items&quot;: [{&quot;title&quot;: &quot;Header 1&quot;, &quot;format&quot;: &quot;h1&quot;}, {&quot;title&quot;: &quot;Header 2&quot;, &quot;format&quot;: &quot;h2&quot;}, {&quot;title&quot;: &quot;Header 3&quot;, &quot;format&quot;: &quot;h3&quot;}, {&quot;title&quot;: &quot;Header 4&quot;, &quot;format&quot;: &quot;h4&quot;}, {&quot;title&quot;: &quot;Header 5&quot;, &quot;format&quot;: &quot;h5&quot;}, {&quot;title&quot;: &quot;Header 6&quot;, &quot;format&quot;: &quot;h6&quot;}], &quot;title&quot;: &quot;Headers&quot;}, {&quot;items&quot;: [{&quot;title&quot;: &quot;Paragraph&quot;, &quot;format&quot;: &quot;p&quot;}, {&quot;title&quot;: &quot;Blockquote&quot;, &quot;format&quot;: &quot;blockquote&quot;}, {&quot;title&quot;: &quot;Div&quot;, &quot;format&quot;: &quot;div&quot;}, {&quot;title&quot;: &quot;Pre&quot;, &quot;format&quot;: &quot;pre&quot;}], &quot;title&quot;: &quot;Block&quot;}, {&quot;items&quot;: [{&quot;title&quot;: &quot;Bold&quot;, &quot;icon&quot;: &quot;bold&quot;, &quot;format&quot;: &quot;bold&quot;}, {&quot;title&quot;: &quot;Italic&quot;, &quot;icon&quot;: &quot;italic&quot;, &quot;format&quot;: &quot;italic&quot;}, {&quot;title&quot;: &quot;Underline&quot;, &quot;icon&quot;: &quot;underline&quot;, &quot;format&quot;: &quot;underline&quot;}, {&quot;title&quot;: &quot;Strikethrough&quot;, &quot;icon&quot;: &quot;strikethrough&quot;, &quot;format&quot;: &quot;strikethrough&quot;}, {&quot;title&quot;: &quot;Superscript&quot;, &quot;icon&quot;: &quot;superscript&quot;, &quot;format&quot;: &quot;superscript&quot;}, {&quot;title&quot;: &quot;Subscript&quot;, &quot;icon&quot;: &quot;subscript&quot;, &quot;format&quot;: &quot;subscript&quot;}, {&quot;title&quot;: &quot;Code&quot;, &quot;icon&quot;: &quot;code&quot;, &quot;format&quot;: &quot;code&quot;}], &quot;title&quot;: &quot;Inline&quot;}, {&quot;items&quot;: [{&quot;title&quot;: &quot;Left&quot;, &quot;icon&quot;: &quot;alignleft&quot;, &quot;format&quot;: &quot;alignleft&quot;}, {&quot;title&quot;: &quot;Center&quot;, &quot;icon&quot;: &quot;aligncenter&quot;, &quot;format&quot;: &quot;aligncenter&quot;}, {&quot;title&quot;: &quot;Right&quot;, &quot;icon&quot;: &quot;alignright&quot;, &quot;format&quot;: &quot;alignright&quot;}, {&quot;title&quot;: &quot;Justify&quot;, &quot;icon&quot;: &quot;alignjustify&quot;, &quot;format&quot;: &quot;alignjustify&quot;}], &quot;title&quot;: &quot;Alignment&quot;}, {&quot;items&quot;: [{&quot;title&quot;: &quot;Listing&quot;, &quot;classes&quot;: &quot;listing&quot;, &quot;selector&quot;: &quot;table&quot;}], &quot;title&quot;: &quot;Tables&quot;}], &quot;resize&quot;: &quot;both&quot;, &quot;formats&quot;: {&quot;clearfix&quot;: {&quot;classes&quot;: &quot;clearfix&quot;, &quot;block&quot;: &quot;div&quot;}, &quot;discreet&quot;: {&quot;inline&quot;: &quot;span&quot;, &quot;classes&quot;: &quot;discreet&quot;}}, &quot;importcss_append&quot;: true}, &quot;base_url&quot;: &quot;https://www.pilotsystems.net/technologies/python/django&quot;}" data-portal-url="https://www.pilotsystems.net" data-pat-pickadate="{&quot;date&quot;: {&quot;selectYears&quot;: 200}, &quot;time&quot;: {&quot;interval&quot;: 5 } }" data-base-url="https://www.pilotsystems.net/technologies/python/django"><div class="outer-wrapper">
+      <header id="content-header">
+        <div class="container">
+          
+      <div id="portal-header">
+    <div id="header">
+    <a href="/" class_accueil="">
+		
+		<img src="https://www.pilotsystems.net/++theme++pilotwww/images/header_logo_PS_black.svg" />
+		<img class="home" src="https://www.pilotsystems.net/++theme++pilotwww/images/header_logo_PS.svg" />
+    </a>
+	
+</div>
+
+
+<div id="portal-searchbox">
+
+    <form id="searchGadget_form" action="https://www.pilotsystems.net/@@search" role="search" data-pat-livesearch="ajaxUrl:https://www.pilotsystems.net/@@ajax-search" class="pat-livesearch">
+
+        <div class="LSBox">
+        <label class="hiddenStructure" for="searchGadget">Chercher par</label>
+
+        <input name="SearchableText" type="text" size="18" id="searchGadget" title="Recherche" placeholder="Recherche" class="searchField" />
+
+        <input class="searchButton" type="submit" value="Rechercher" />
+
+        <div class="searchSection">
+            <input id="searchbox_currentfolder_only" class="noborder" type="checkbox" name="path" value="/www-pilot/portal/technologies/python" />
+            <label for="searchbox_currentfolder_only" style="cursor: pointer">Seulement dans le dossier courant</label>
+        </div>
+        </div>
+    </form>
+
+    <div id="portal-advanced-search" class="hiddenStructure">
+        <a href="https://www.pilotsystems.net/@@search">Recherche avancée…</a>
+    </div>
+
+</div>
+
+
+<section id="main-navigation" class="collapsed">
+    
+    <p class="hiddenStructure">Navigation</p>
+
+    <div class="container">
+        <button id="trigger-topmenu" type="button"><i class="fa fa-bars"></i></button>
+    </div>
+
+    <div class="topmenu topmenu-slidedown">
+        <div class="content_button">
+            <button type="button" class="topmenu-close"><i class="fa fa-times"></i></button>
+        </div>
+		<div id="blur"></div>
+		<div id="content_nav">
+        <nav>
+            <ul id="portal-globalnav">
+                
+                    <li id="portaltab-dev-web">
+                        <a href="https://www.pilotsystems.net/dev-web">Dév web</a>
+                        <p>Accompagnement personnalisé pour choisir &amp; déployer des solutions web adaptées à vos projets</p>
+                        <ul>
+                            <li>
+                                
+                                    
+                                    <p>Prestations</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/audit" title="">Audit</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/expression-de-besoins" title="">Expression de besoins</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/developpement-dapplications" title="">Développement d'applications</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/optimisations-et-tunning" title="">Optimisations et tunning</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/support-assistance" title="">Support et Assistance</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/formations" title="">Formations</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/gestion-de-contenu" title="">Gestion de contenu</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/mobilite" title="">Mobilité</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/dev-web/prestations/webdesign-ux-ui" title="">Webdesign - UX</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/dev-web/demarche-devops" title="">Démarche DevOps</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/dev-web/methodologie-agile" title="">Méthodologie Agile</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-transformation-digitale">
+                        <a href="https://www.pilotsystems.net/transformation-digitale">Transfo Digitale</a>
+                        <p>Des méthodes et des outils pour réussir votre transformation digitale</p>
+                        <ul>
+                            <li>
+                                
+                                    
+                                    <p>Concepts</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/concepts/prestations" title="">Prestations</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/concepts/cas-dusages" title="">Cas d'usages</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    
+                                    <p>Cloud Broker</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/business-model" title="">Business model</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/cloud-broker" title="">Cloud broker</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/prestations-cloud" title="">Prestations</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/pour-qui" title="">Pour Qui ?</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/workshop-cloud" title="">Workshop Cloud</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/virtualisation" title="">Virtualisation</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/support-assistance" title="">Support et Assistance</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/migration" title="">Migration</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/transformation-digitale/cloud-broker/formation" title="">Formation</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-cloud">
+                        <a href="https://www.pilotsystems.net/cloud">Cloud</a>
+                        <p>Des solutions Cloud alliant sécurité, évolution et pérennité</p>
+                        <ul>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/cloud/votre-cloud-prive-infogere" title="">Votre Cloud privé infogéré</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/cloud/offre-cloud-infogere" title="">L’offre Cloud infogéré</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/cloud/tarif-hebergement-cloud-prive" title="">Tarifs d'hébergement</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    
+                                    <p>Infrastructure d'hébergement</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/cloud/infrastructure-hebergement-cloud/notre-infrastructure-devops" title="">Notre infrastructure DevOps</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/cloud/infrastructure-hebergement-cloud/services-hebergement" title="">Services d’hébergement</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/cloud/infrastructure-hebergement-cloud/politique-de-sauvegarde" title="">Politique de sauvegarde</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/cloud/sla-et-garanties-de-services" title="">SLA et garanties de Services</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-solutions-metiers">
+                        <a href="https://www.pilotsystems.net/solutions-metiers">Solutions</a>
+                        <p>Découvrez nos solutions pour le web, la collaboration ou les applicatifs spécifiques</p>
+                        <ul>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/solutions-metiers/web" title="">Web</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    
+                                    <p>Intranet</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/solutions-metiers/intranet/reseaux-sociaux-entreprises" title="">Réseaux Sociaux d'Entreprise - RSE</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/solutions-metiers/intranet/solutions-collaboratives" title="">Solutions Collaboratives</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/solutions-metiers/emailing" title="">Emailing</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/solutions-metiers/gestion-temps-activites" title="">Gestion des temps</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-technologies">
+                        <a href="https://www.pilotsystems.net/technologies">Technologies</a>
+                        <p>L'expertise technologique de Pilot Systems en fonction du contexte de votre projet</p>
+                        <ul>
+                            <li>
+                                
+                                    
+                                    <p>Python</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/python/langage-python" title="">Le langage Python</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/python/django" title="">Le framework Django</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/python/serveur-dapplications-zope" title="">Le serveur d'applications Zope</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    
+                                    <p>Gestion de contenu</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cms/plone-cms" title="">Plone</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cms/zinnia-blog" title="">Zinnia</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cms/wordpress" title="">Wordpress</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                    
+                                    <p>Cloud</p>
+                                
+
+                                <ul>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/chef" title="">Chef</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/cloudstack" title="">CloudStack</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/docker" title="">Docker</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/openstack" title="">OpenStack</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/puppet" title="">Puppet</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.pilotsystems.net/technologies/cloud/xen" title="">Xen Project</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-references">
+                        <a href="https://www.pilotsystems.net/references">Références</a>
+                        <p></p>
+                        <ul>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/developpement-d-une-base-de-contacts-collaborative-pour-ameliorer-la-qualite-des-soins" title="">Application collaborative eSanté</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/django-au-service-de-pro-barreau" title="">Dév Django eCommerce</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/afdas-web-applications-metier-infogerance-applicative" title="">Applications métier</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/agregateur-libefood" title="">Dév Django social</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/intranet-cambon-partners" title="">Intranet métier</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/tierce-maintenance-applicative-au-service-de-la-societe-lesaffre" title="">TMA Plone</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/assistance-developpement-python-django-pour-liberation" title="">Dév Django SI</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/site-web-plone-pour-la-mairie-de-goussainville" title="">Nouveau site Web</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/liberation-hebergement-cloud-infogerance" title="">Externalisation Cloud</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/intranet-plone-pour-la-mairie-de-goussainville" title="">Intranet collectivité</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/site-cambon-partners" title="">Refonte Web</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/une-solution-de-messagerie-open-source-pour-la-dgcp" title="">Serveur de messagerie</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/maintenir-les-applications-plone-de-l-universite-d-orleans" title="">TMA Intranet</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/references/sso-applications-metier-adeus" title="">SSO applicatifs métier</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-contact">
+                        <a href="https://www.pilotsystems.net/contact">Contact</a>
+                        <p>Une question ? Nous vous répondrons dans les plus brefs délais.</p>
+                        <ul>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/contact/nous-trouver" title="">Nous trouver</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/contact/recrutement" title="">Recrutement</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-actus">
+                        <a href="https://www.pilotsystems.net/actus">Actu</a>
+                        <p>Suivez ici les focus de Pilot Systems sur les actualités du monde numérique.</p>
+                        <ul>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/actus/actualites-cloud" title="">Actu Cloud</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/actus/actualites-transformation-digitale" title="">Actu transformation digitale</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/actus/actualites-pilot-systems" title="">Actu Pilot Systems</a>
+                                    
+                                
+
+                                
+                            </li>
+                            <li>
+                                
+                                    <a href="https://www.pilotsystems.net/actus/actualites-communaute" title="">Actu Communauté</a>
+                                    
+                                
+
+                                
+                            </li>
+                        </ul>
+                    </li>
+                
+                    <li id="portaltab-events">
+                        <a href="https://www.pilotsystems.net/events">Evénements</a>
+                        <p></p>
+                        
+                    </li>
+                
+            </ul>
+        </nav>
+
+		</div>
+    </div>
+
+</section>
+<div id="portal-anontools">
+  <ul>
+    <li>
+      
+          <a title="Se connecter" data-pat-plone-modal="{&quot;prependContent&quot;: &quot;.portalMessage&quot;, &quot;title&quot;: &quot;Log in&quot;, &quot;width&quot;: &quot;26em&quot;}" id="personaltools-login" href="https://www.pilotsystems.net/login" class="pat-plone-modal">Se connecter</a>
+      
+    </li>
+  </ul>
+</div>
+
+</div>
+
+    
+          
+        </div>
+      </header>
+      <div id="mainnavigation-wrapper">
+        <div id="mainnavigation"></div>
+      </div>
+      
+      <div id="above-content-wrapper">
+          <section id="viewlet-above-content"></section>
+      </div>
+      <div class="container">
+        <div class="row">
+          <aside id="global_statusmessage">
+      
+
+      <div>
+      </div>
+    </aside>
+        </div>
+        <main id="main-container" class="row row-offcanvas row-offcanvas-right">
+          <div id="content-center">
+          <div class="col-xs-6 col-sm-3 sidebar-offcanvas">
+                    <aside id="portal-column-one">
+                        <div class="portletWrapper" id="portletwrapper-706c6f6e652e6c656674636f6c756d6e0a636f6e746578740a2f7777772d70696c6f742f706f7274616c2f746563686e6f6c6f676965730a746563686e6f6c6f676965" data-portlethash="706c6f6e652e6c656674636f6c756d6e0a636f6e746578740a2f7777772d70696c6f742f706f7274616c2f746563686e6f6c6f676965730a746563686e6f6c6f676965">
+<section class="portlet portletNavigationTree" role="navigation">
+
+    <header class="portletHeader">
+        <a href="https://www.pilotsystems.net/technologies" class="tile">Technologie</a>
+    </header>
+
+    <nav class="portletContent lastItem">
+
+        <ul class="navTree navTreeLevel0">
+            
+            
+
+
+
+<li class="navTreeItem visualNoMarker navTreeItemInPath navTreeFolderish section-python">
+
+    
+
+        <a href="https://www.pilotsystems.net/technologies/python" title="Pilot a fait le choix de Python pour son efficacité tant pour la maîtrise d'oeuvre que pour la maîtrise d'ouvrage. Ce choix de précurseur datant de plus de 10 ans est de plus en plus confirmé par la généralisation de l'utilisation de ce langage. " class="state-published navTreeItemInPath navTreeFolderish contenttype-folder">
+            
+            Python
+        </a>
+
+        
+            
+        
+
+    
+</li>
+
+<li class="navTreeItem visualNoMarker navTreeFolderish section-cms">
+
+    
+
+        <a href="https://www.pilotsystems.net/technologies/cms" title="Avec Pilot Systems, le choix de la gestion de contenu s'inscrit dans la cohérence, l'efficacité et la fiabilité : Plone et Zinnia." class="state-published navTreeFolderish contenttype-folder">
+            
+            Gestion de contenu
+        </a>
+
+        
+
+    
+</li>
+
+<li class="navTreeItem visualNoMarker navTreeFolderish section-cloud">
+
+    
+
+        <a href="https://www.pilotsystems.net/technologies/cloud" title="Le Cloud implique le choix de technologies efficaces pour fournir les services voulus aux métiers avec la qualité convenue. C'est un contrat de confiance qui affranchit les métiers de préoccupations techniques et implique une transparence de la part des services informatiques.&#13;&#10;C'est dans cette optique que Pilot Systems présente les technologies suivantes : Chef, CloudStack, Docker, OpenStack, Puppet, Xen... " class="state-published navTreeFolderish contenttype-folder">
+            
+            Cloud
+        </a>
+
+        
+
+    
+</li>
+
+
+
+
+        </ul>
+    </nav>
+</section>
+
+</div>
+                    </aside>
+                </div>
+          
+
+        
+
+        <div class="&#10;                col-xs-12 col-sm-9&#10;            ">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <article id="content">
+
+          
+
+          <header>
+            <div id="viewlet-above-content-title"><nav id="portal-breadcrumbs" class="plone-breadcrumb">
+  <div class="container">
+    <span id="breadcrumbs-you-are-here" class="hiddenStructure">Vous êtes ici :</span>
+    <ol aria-labelledby="breadcrumbs-you-are-here">
+      <li id="breadcrumbs-home">
+        <a href="https://www.pilotsystems.net">Accueil</a>
+      </li>
+      <li id="breadcrumbs-1">
+        
+          <a href="https://www.pilotsystems.net/technologies">Technologies</a>
+          
+        
+      </li>
+      <li id="breadcrumbs-2">
+        
+          <a href="https://www.pilotsystems.net/technologies/python">Python</a>
+          
+        
+      </li>
+      <li id="breadcrumbs-3">
+        
+          
+          <span id="breadcrumbs-current">Le framework Django</span>
+        
+      </li>
+    </ol>
+  </div>
+</nav>
+
+
+
+<span id="social-tags-body" style="display: none" itemscope="" itemtype="http://schema.org/WebPage">
+  <span itemprop="name">Le framework Django</span>
+  <span itemprop="description">Pour le développeur web qui veut asseoir sa réputation, le framework Django est la solution. Django encourage le développement rapide autant que la conception propre et pragmatique.</span>
+  <span itemprop="url">https://www.pilotsystems.net/technologies/python/django</span>
+  <span itemprop="image">https://www.pilotsystems.net/@@site-logo/logoPS_RS.png</span>
+</span>
+
+<section id="actions">
+    <ul>
+        <!--li>-->
+            <!--a href="javascript:window.print();" class="share_button"><img tal:attributes="src string:${context/portal_url}/++theme++pilotwww/images/social_print.svg"/></a>-->
+        <!--/li>-->
+        <!--li>-->
+            <!--Telecharger-->
+
+        <!--/li>-->
+        <li id="social-panel-wrapper">
+            <a title="Partager cette page sur les réseaux sociaux" id="social-panel-trigger" class="share_button">
+                <img src="https://www.pilotsystems.net/++theme++pilotwww/images/social_share.svg" />
+            </a>
+
+            <div id="social-panel" style="display:none">
+                <div class="addthis_sharing_toolbox">
+                    <a class="addthis_button_facebook"></a>
+                    <a class="addthis_button_twitter"></a>
+                    <a class="addthis_button_email"></a>
+                    <a class="addthis_button_compact"></a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+
+</div>
+            
+                <h1 class="documentFirstHeading">Le framework Django</h1>
+            
+            <div id="viewlet-below-content-title"></div>
+
+            
+                <div class="documentDescription description">Pour le développeur web qui veut asseoir sa réputation, le framework Django est la solution. Django encourage le développement rapide autant que la conception propre et pragmatique.</div>
+            
+          </header>
+
+          <section id="viewlet-above-content-body">
+</section>
+          <section id="content-core">
+            
+
+  <div id="parent-fieldname-text" class=""><p><span>Avec des demandes clients exigeantes en termes de fonctions, performance et délais de réalisation, Pilot Systems s’est spécialisé dans le framework Django et est aujourd’hui un expert reconnu auprès de ses clients et de la communauté. </span></p>
+<p><span>Le framework Django étend les avantages de Python avec les principes suivants :</span></p>
+<ul>
+<li><strong>Diviser pour mieux régner</strong><span> : Django suit le le modèle de conception MVC qui consiste à séparer l’information, le traitement et l’affichage d'une application. Ce mécanisme réduit les interdépendances entre les tâches et permet à chaque intervenant de se concentrer sur un seul aspect du projet à la fois. Il facilite également la ré-utilisation des briques logicielles existantes. </span></li>
+<li dir="ltr">
+<p dir="ltr"><span><strong>La maîtrise de la donnée est la clé pour l'efficacité</strong> : le traitement des données s'appuie sur un ORM simple et puissant qui propose une gestion native et efficace des bases relationnelles, mais aussi une gestion automatique du back-office et la possibilité de changer de base de données sans changer le code.</span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span><strong><em>Don't Repeat Yourself</em> (DRY)</strong> :  ce principe de développement logiciel vise à réduire les répétitions de toute sorte, permet un découplage puissant et génère un code plus simple, plus efficace et moins coûteux à maintenir et à faire évoluer.</span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span><strong>La puissance n'est rien sans le contrôle</strong> : une application Django s'organise sous la forme de modules Python qui permettent de supprimer totalement les effets de bord sur la modification d’une partie du logiciel, rend l'application ou une partie de l'application réutilisable, simplifie le travail d'équipe et offre une grande évolutivité.</span></p>
+</li>
+</ul>
+<p dir="ltr"><strong>Les références internationales de Django</strong><span></span></p>
+<ul>
+<li dir="ltr">
+<p dir="ltr"><span>The Washington Post </span><span><a href="http://www.washingtonpost.com/">http://www.washingtonpost.com/</a> ;</span><span></span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>Google App Engine <a class="external-link" href="https://appengine.google.com" target="_self" title="">https://appengine.google.com</a></span><span> ;</span><span></span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>La NASA </span><span><a href="http://ti.arc.nasa.gov/">http://ti.arc.nasa.gov/</a> ;</span><span></span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>Libération </span><span><a href="http://www.liberation.fr/">http://www.liberation.fr/</a> ;</span><span></span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>Lawrence : le journal qui a donné naissance au framework Django </span><span><a href="http://www.lawrence.com/">http://www.lawrence.com</a>.</span><span></span></p>
+</li>
+</ul>
+<p dir="ltr"><strong>Les applications développées pour Django :</strong></p>
+<ul>
+<li dir="ltr">
+<p dir="ltr"><span>django-piston : API REST pour application Iphone, android, Ipad, etc ;</span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>sesql : recherches textuelles avancées ;</span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>django-test-utils : génération de tests fonctionnels ;</span></p>
+</li>
+<li dir="ltr">
+<p dir="ltr"><span>pinax : CMS (système de gestion de contenu) social.</span></p>
+</li>
+</ul>
+<p dir="ltr"><span>Une communauté active soutient Django et organise chaque année des rencontres internationales et françaises.</span></p>
+<p dir="ltr"><span><br /></span></p></div>
+
+
+          </section>
+          <section id="viewlet-below-content-body">
+
+    <div class="visualClear"><!-- --></div>
+
+    <div class="documentActions">
+        
+
+        
+
+    </div>
+
+
+
+</section>
+
+          
+        </article>
+                </div>
+            </div>
+            <!--<footer id="belowcontent" class="row">-->
+            <!--<div class="col-xs-12 col-sm-12">-->
+            <!--<xsl:copy-of css:select="#viewlet-below-content" />-->
+            <!--<xsl:copy-of css:select="#portal-footer-wrapper>.row" />-->
+            <!--</div>-->
+            <!--</footer>-->
+        </div>
+    
+          <div id="column2-container">
+          </div>
+          </div>
+          <div id="prefooter"><div class="row">
+	<div class="col-xs-12">
+		
+<div class="portletWrapper" id="portletwrapper-706c6f6e652e666f6f746572706f72746c6574730a636f6e746578740a2f7777772d70696c6f742f706f7274616c0a70696c6f742d73797374656d732d726573736f75726365732d6c696573" data-portlethash="706c6f6e652e666f6f746572706f72746c6574730a636f6e746578740a2f7777772d70696c6f742f706f7274616c0a70696c6f742d73797374656d732d726573736f75726365732d6c696573"><dl class="portlet portlet-related">
+  <dt class="portletHeader">
+    <span class="portletTopLeft"></span>
+    <span> Ressources liées </span>
+    <span class="portletTopRight"></span>
+  </dt>
+  <dd class="portletItem odd">
+    
+      <a href="https://www.pilotsystems.net/actus/travail-collaboratif-politiko-project">
+        <span>Pilot Systems lance Politiko, plateforme participative en entreprise</span>
+         <p>En partenariat avec le quotidien Libération, Pilot Systems s'apprête à lancer Politiko, une nouvelle plateforme pour favoriser l'aspect participatif au sein des entreprises et les inscrire réellement dans l'ère du web 2.0.</p>
+      </a>
+
+    
+      <a href="https://www.pilotsystems.net/actus/lancement-politiko-plateforme-participative-jeparticipe">
+        <span>Lancement du site Jeparticipe.org, plateforme collaborative pour l'entreprise</span>
+         <p>En plein buzz en ce début de mai, la plateforme participative en entreprise Jeparticipe.org a été lancée officiellement aujourd'hui, avant le lancement imminent du projet Politiko. Fruit d'un projet Pilot Systems réalisé pour le quotidtien Libération, le web 2.0 va désormais prendre un nouvel élan dans un contexte professionnel. </p>
+      </a>
+
+    
+      <a href="https://www.pilotsystems.net/actus/webelect-site-presidentielles-les-echos">
+        <span>Pilot Systems déploie avec Webelect le site de la présidentielle des Echos</span>
+         <p>Main dans la main avec l’équipe de Webelect, Pilot Systems a déployé une première version du site de la Présidentielle des Echos. Véritable agrégateur social, ce site est une vitrine du savoir-faire de Webelect dans le domaine de la curation web. </p>
+      </a>
+
+    
+    <span class="portletBottomLeft"></span>
+    <span class="portletBottomRight"></span>
+  </dd>
+</dl>
+</div>
+
+
+	</div>
+</div></div>
+        </main><!--/row-->
+      </div><!--/container-->
+    </div><!--/outer-wrapper --><footer id="portal-footer-wrapper">
+      <div class="container" id="portal-footer"><section id="footer-references">
+
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_af.png" alt="Allocations familiales" title="Allocations familiales" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_afdas.png" alt="Afdas" title="Afdas" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_astrium.png" alt="Astrium" title="Astrium" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_cambon.png" alt="Cambon" title="Cambon" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_cmp.png" alt="CMP" title="CMP" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_general_protec.png" alt="Generale de protection" title="Generale de protection" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_goussainville.png" alt="Mairie de Goussainville" title="Mairie de Goussainville" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_liberation.png" alt="Libération" title="Libération" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_ministere.png" alt="Ministère de l'économie" title="Ministère de l'économie" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_pantin.png" alt="Ville de Pantin" title="Ville de Pantin" />
+    </div>
+    <div>
+        <img src="/++theme++pilotwww/images/references/logo_home_probarreau.png" alt="Probarreau" title="Probarreau" />
+    </div>
+</section><section id="footer-contact">
+    <div id="contact">
+		<a href="/"><img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_logo_PS.svg" /></a>
+		<ul>
+			<li class="tel_number">
+				<img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_tel.svg" />
+				<span>+33 (0) 1 44 53 05 55</span>
+			</li>
+			<li>
+				<img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_mail.svg" />
+				<span>info@pilotsystems.net</span>
+			</li>
+			<li>
+				<img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_adresse.svg" />
+				<span>82 rue Pixérécourt<br />
+					75 020 Paris
+				</span>
+			</li>
+		</ul>
+		
+		<footer>
+			<a href="https://twitter.com/pilotsystems" target="_blank"><img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_tw.svg" /></a>
+			<a href="https://www.facebook.com/pilotsystems.net/" target="_blank"><img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_fa.svg" /></a>
+			<a href="https://www.linkedin.com/company/52783/" target="_blank"><img src="https://www.pilotsystems.net/++theme++pilotwww/images/footer_li.svg" /></a>
+		</footer>
+		
+	</div>
+	
+	
+	<div id="contact_form">
+		<h3>Vous avez un projet ?
+		<span id="contact_form_trigger">Contactez-nous <i class="fa fa-angle-down"></i></span>
+		</h3>
+        <div id="contact_form_placeholder"></div>
+	</div>
+</section><section id="footer-sitemap">
+    <ul>
+        <li>
+            <a href="https://www.pilotsystems.net/dev-web">Dév web</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/transformation-digitale">Transfo Digitale</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/cloud">Cloud</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/solutions-metiers">Solutions</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/technologies">Technologies</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/references">Références</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/contact">Contact</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/actus">Actu</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/events">Evénements</a>
+        </li>
+        <li>
+            <a href="https://www.pilotsystems.net/landing-pages">Landing pages</a>
+        </li>
+        <li>
+            <a href="/sitemap">Plan du site</a>
+        </li>
+    </ul>
+	<p>© 1999 - 2019 Pilot Systems - Powered by <a href="/technologies/cms/plone-cms" target="_blank">Plone</a></p>
+</section></div>
+    </footer><script type="text/javascript" src="/++theme++pilotwww/bundle.js"></script><!--<script src="/++theme++pilotwww/js/instantclick.js" data-no-instant></script>--><!--<script data-no-instant>--><!--if (document.getElementsByTagName("body")[0].className.match('userrole-anonymous')) {--><!--InstantClick.init(50);--><!--}--><!--</script>--><script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59df923301a5c8db"></script><!-- Matomo --><script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//piwik.pilotsystems.net/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script><noscript><p><img src="//piwik.pilotsystems.net/piwik/piwik.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript><!-- End Matomo Code --></body>
+</html>

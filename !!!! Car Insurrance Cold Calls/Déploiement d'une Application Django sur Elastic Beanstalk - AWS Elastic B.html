@@ -1,0 +1,934 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Déploiement d'une Application Django sur Elastic Beanstalk - AWS Elastic Beanstalk</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="home" href="#top" />
+      <link rel="up" href="create-deploy-python-apps.html" title="Travail avec Python" />
+      <link rel="prev" href="create-deploy-python-flask.html" title="Déploiement d'une application Flask sur Elastic Beanstalk" />
+      <link rel="next" href="create-deploy-python-rds.html" title="Ajout d'une instance de base de données Amazon RDS à votre environnement d'application Python" />
+      <meta name="description" content="Créez, configurez et déployez une application Django sur AWS Elastic Beanstalk avec l'interface de ligne de commande EB." />
+      <meta name="keywords" content="AWS Elastic Beanstalk,Elastic Beanstalk,extension eb,déploiement,gestion de ressources,application web,développement" />
+      <meta name="deployment_region" content="IAD" />
+      <meta name="product" content="AWS Elastic Beanstalk" />
+      <meta name="guide" content="Manuel du développeur" />
+      <meta name="guide-locale" content="fr_fr" />
+      <meta name="tocs" content="toc-contents.json" />
+      <meta name="marketingLocale" content="fr_FR" />
+      <link rel="icon" type="image/ico" href="/images/favicon.ico" />
+      <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico" />
+      <link rel="canonical" href="https://docs.aws.amazon.com/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html" />
+      <link rel="stylesheet" type="text/css" href="/font/css/font-awesome.min.css" />
+      <link id="code-style" rel="stylesheet" type="text/css" href="/css/code/light.css" />
+      <link rel="stylesheet" type="text/css" href="/css/awsdocs.css?v=20181221" /><script type="text/javascript" src="/js/jquery.min.js"></script><script type="text/javascript" src="/js/awsdocs.min.js?v=20181221"></script><link rel="stylesheet" type="text/css" href="/assets/marketing/css/marketing-target.css" /><script type="text/javascript" src="/assets/marketing/js/marketing-target.js" defer="defer"></script></head>
+   <body id="top">
+      <div xmlns:db="http://docbook.org/ns/docbook" id="aws-nav" class="aws-nav-header">
+         <div class="aws-nav-header-left">
+            <div class="aws-nav-logo">
+               <!--aws_logo_105x39.png--><a href="http://aws.amazon.com"><img src="/images/aws_logo_105x39.png" alt="Amazon Web Services" /></a></div>
+         </div>
+         <div id="aws-nav-header-right" class="aws-nav-header-right">
+            <div class="aws-nav-cta-button-outer">
+               <div class="js-mbox" data-mbox="en_h_nav_cta"><span class="aws-nav-cta-default" id="span-conosole-signin"><a id="aws-nav-cta-button" class="aws-nav-button" href="https://console.aws.amazon.com/console/home">Connectez-vous à la console</a></span><span class="aws-nav-cta-default" id="span-conosole-signup" style="display:none"><a id="aws-nav-cta-button" class="aws-nav-button" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html">Essayez AWS gratuitement</a></span></div>
+            </div>
+            <div class="aws-nav-popover-trigger" data-dropdown="aws-nav-dropdown-lang"><select id="languageSelection" onchange="SelectLanguage()">
+                  <option value="/de_de/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Deutsch</option>
+                  <option value="/en_us/elasticbeanstalk/latest/dg/create-deploy-python-django.html">English</option>
+                  <option value="/en_pv/elasticbeanstalk/latest/dg/create-deploy-python-django.html">English (beta)</option>
+                  <option value="/es_es/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Español</option>
+                  <option value="/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html" selected="selected">Français</option>
+                  <option value="/it_it/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Italiano</option>
+                  <option value="/ja_jp/elasticbeanstalk/latest/dg/create-deploy-python-django.html">日本語</option>
+                  <option value="/ko_kr/elasticbeanstalk/latest/dg/create-deploy-python-django.html">한국어</option>
+                  <option value="/pt_br/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Português</option>
+                  <option value="/zh_cn/elasticbeanstalk/latest/dg/create-deploy-python-django.html">中文 (简体)</option>
+                  <option value="/zh_tw/elasticbeanstalk/latest/dg/create-deploy-python-django.html">中文 (繁體)</option></select></div><a class="btn btn-pdf-link" id="pdf-link-top" href="awseb-dg.pdf#create-deploy-python-django" target="_blank" title="Ouvrir le PDF"></a><div id="aws-nav-quicklinks-separator" class="aws-nav-quicklinks-separator">
+               <div class="aws-nav-left"></div>
+               <div class="aws-nav-right"></div>
+            </div>
+         </div>
+      </div>
+      <div id="content-container">
+         <div id="left-column">
+            <div id="left-col-header">
+               <div id="left-col-top-content">
+                  <div id="service-name">AWS Elastic Beanstalk </div>
+                  <div id="search"><i id="search-icon" class="fa fa-search fa-2x"></i></div>
+                  <div id="guide-info">Manuel du développeur
+                     <div id="content-button"><i id="toggle-contents" class="fa fa-bars"></i></div>
+                  </div>
+               </div>
+               <form id="finegrainedSearch" method="get" onsubmit="return searchFormSubmit(this);" action="/search/doc-search.html">
+                  <div id="search-form"><select id="search-select" name="searchPath">
+                        <option value="all">Tout le site</option>
+                        <option value="AWSMarketplace">AMI d'AWS Marketplace</option>
+                        <option value="amis">AMI, toutes sources confondues</option>
+                        <option value="articles">Articles et didacticiels</option>
+                        <option value="products_and_info">Informations sur les produits AWS</option>
+                        <option value="case_studies">Etudes de cas</option>
+                        <option value="customerapps">Applications clientes</option>
+                        <option value="documentation">Documentation</option>
+                        <option value="documentation-product">Documentation – Ce produit</option>
+                        <option value="documentation-guide" selected="selected">Documentation – Ce manuel</option>
+                        <option value="datasets">Ensembles de données publics</option>
+                        <option value="releasenotes">Notes de mise à jour</option>
+                        <option value="solution_providers">Partenaires</option>
+                        <option value="code">Exemples de codes et bibliothèques</option></select><br /><input id="search-query" name="searchQuery" type="text" placeholder="Rechercher" /><input id="search-button" src="/images/search-button.png" alt="Go" type="image" /></div><input type="hidden" name="this_doc_product" id="this_doc_product" value="AWS Elastic Beanstalk" /><input type="hidden" name="this_doc_guide" id="this_doc_guide" value="Manuel du développeur" /><input type="hidden" name="doc_locale" value="fr_fr" /></form>
+            </div>
+            <div id="toc"></div>
+         </div>
+         <div id="main-column">
+            <div id="main">
+               <div id="main-content">
+                  <div id="main-col-body">
+                     <table summary="Chemin de navigation">
+                        <tr>
+                           <td>
+                              <div class="breadcrumb"><a href="/index.html">Documentation AWS</a> » <a href="/elasticbeanstalk/index.html">AWS Elastic Beanstalk</a> » <a href="index.html">Manuel du développeur</a> » <a href="concepts-all-platforms.html">Plateformes AWS Elastic Beanstalk</a> » <a href="create-deploy-python-apps.html">Travail avec Python</a> » <span class="breadcrumb">Déploiement d'une Application Django sur Elastic Beanstalk</span></div>
+                           </td>
+                        </tr>
+                     </table>
+                     <div id="language-notice">
+                        <div class="language-notice-text"></div>
+                     </div>
+                     <div></div>
+                     <h1 class="topictitle" id="create-deploy-python-django">Déploiement d'une Application Django sur Elastic Beanstalk</h1>
+                     <p>Ce didacticiel vous guide tout au long du déploiement d'un site web <a href="https://www.djangoproject.com/" target="_blank">Django</a> par défaut, généré automatiquement, sur un environnement AWS Elastic Beanstalk exécutant
+                        Python. Ce didacticiel vous montre comment héberger une application web Python dans
+                        le cloud à l'aide d'un environnement Elastic Beanstalk. 
+                     </p>
+                     <p>Dans le cadre de ce didacticiel, vous effectuerez les tâches suivantes :</p>
+                     <div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-setup-venv">Configuration d'un environnement virtuel Python et installation de Django</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-create-app">Création d'un projet Django</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-configure-for-eb">Configuration de votre application Django pour Elastic Beanstalk</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-deploy">Déploiement de votre site avec l'interface de ligne de commande EB</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-update-app">Mise à jour de votre application</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="create-deploy-python-django.html#python-django-stopping">Nettoyage</a></p>
+                              
+                           </li>
+                        </ul>
+                     </div>
+                     
+                     <h2 id="python-django-prereq">Prérequis</h2>
+                     
+                     <p>Pour utiliser n'importe quel service AWS, y compris Elastic Beanstalk, vous devez
+                        disposer d'un compte AWS et d'informations d'identification. Pour en savoir plus et
+                        vous inscrire, visitez <a href="https://aws.amazon.com/" target="_blank">https://aws.amazon.com/</a>.
+                     </p>
+                     
+                     <p>Pour suivre ce didacticiel, la <a href="python-development-environment.html">Configuration de votre environnement de développement Python</a> doit être terminée et les packages suivants installés :
+                     </p>
+                     
+                     <div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Python 3.6</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><code class="code">pip</code></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><code class="code">virtualenv</code></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><code class="code">awsebcli</code></p>
+                              
+                           </li>
+                        </ul>
+                     </div>
+                     
+                     <p>L'infrastructure <a href="https://www.djangoproject.com/" target="_blank">Django</a> est installée dans le cadre de ce tutoriel.
+                     </p>
+                     
+                     <div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Créer des environnements avec l'interface de ligne de commande EB nécessite un <a href="concepts-roles-service.html">rôle de service</a>. Vous pouvez créer un rôle de service en créant un environnement dans la Console
+                           Elastic Beanstalk. Si vous n'avez pas de rôle de service, l'interface de ligne de
+                           commande EB essaie d'en créer un lorsque vous exécutez <code class="code">eb create</code>.
+                        </p>
+                     </div>
+                     
+                     
+                     <h2 id="python-django-setup-venv">Configuration d'un environnement virtuel Python et installation de Django</h2>
+                     
+                     <p>Créez un environnement virtuel avec <code class="code">virtualenv</code> et utilisez-le pour installer Django et ses dépendances. En utilisant un environnement
+                        virtuel, vous pouvez savoir exactement de quels packages votre application a besoin,
+                        afin que les packages requis soient installés sur les instances Amazon EC2 exécutant
+                        votre application. 
+                     </p>
+                     
+                     <p>Les étapes suivantes illustrent les commandes que vous devez entrer pour les systèmes
+                        Unix et Windows, affichées sur des onglets distincts.
+                     </p>
+                     
+                     <p class="title"><b>Pour configurer votre environnement virtuel</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Créez un environnement virtuel nommé <code>eb-virt</code>.
+                           </p>
+                           
+                           <div class="option container">
+                              <div class="optionselector"><span class="optionanchor" id=""><span class="option  selected" data-tab="unix-based-systems">Unix-based Systems</span></span><span class="optionanchor" id=""><span class="option " data-tab="windows">Windows</span></span></div>
+                              <dl>
+                                 <dt>Unix-based Systems</dt>
+                                 <dd class="selected" data-tab="unix-based-systems"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~$ <strong class="userinput"><code>virtualenv ~/eb-virt</code></strong></code></pre></dd>
+                                 <dt>Windows</dt>
+                                 <dd class="" data-tab="windows"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">C:\&gt; <strong class="userinput"><code>virtualenv %HOMEPATH%\eb-virt</code></strong></code></pre></dd>
+                              </dl>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Activez l'environnement virtuel.</p>
+                           
+                           <div class="option container">
+                              <div class="optionselector"><span class="optionanchor" id=""><span class="option  selected" data-tab="unix-based-systems">Unix-based Systems</span></span><span class="optionanchor" id=""><span class="option " data-tab="windows">Windows</span></span></div>
+                              <dl>
+                                 <dt>Unix-based Systems</dt>
+                                 <dd class="selected" data-tab="unix-based-systems"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~$ <strong class="userinput"><code>source ~/eb-virt/bin/activate</code></strong>
+(eb-virt) ~$</code></pre></dd>
+                                 <dt>Windows</dt>
+                                 <dd class="" data-tab="windows"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">C:\&gt;<strong class="userinput"><code>%HOMEPATH%\eb-virt\Scripts\activate</code></strong>
+(eb-virt) C:\&gt;</code></pre></dd>
+                              </dl>
+                           </div>
+                           
+                           <p>Vous verrez <code class="code">(eb-virt)</code> ajouté à votre invite de commande, ce qui indique que vous êtes dans un environnement
+                              virtuel.
+                           </p>
+                           
+                           <div class="aws-note">
+                              <p class="aws-note">Note</p>
+                              <p>Les instructions restantes montrent l'invite de commande Linux dans votre répertoire
+                                 de base <code class="code">~$</code>. Sous Windows, il s'agit de <code class="code">C:\Users\<em class="replaceable"><code>USERNAME</code></em>&gt;</code>, où <em class="replaceable"><code>USERNAME</code></em> est votre nom de connexion Windows.
+                              </p>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Utilisez <code class="code">pip</code> pour installer Django.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt)~$ <strong class="userinput"><code>pip install django==2.1.1</code></strong></code></pre>
+                           <div class="aws-note">
+                              <p class="aws-note">Note</p>
+                              <p>La version de Django que vous installez doit être compatible avec la version de Python
+                                 de la configuration Elastic Beanstalk Python que vous choisissez pour déployer votre
+                                 application. Pour plus d'informations sur le déploiement, consultez <a href="create-deploy-python-django.html#python-django-deploy">Déploiement de votre site avec l'interface de ligne de commande EB</a> dans cette rubrique.
+                              </p>
+                              <p>Pour plus d'informations sur les versions actuelles de la plateforme Python, consultez
+                                 <a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.python">Python</a> dans le document <em>Plateformes prises en charge par AWS Elastic Beanstalk</em>.
+                              </p>
+                              <p>Pour plus d'informations sur la compatibilité de la version Django avec Python, consultez
+                                 <a href="https://docs.djangoproject.com/en/2.1/faq/install/#what-python-version-can-i-use-with-django" target="_blank">Quelle version de Python devrais-je utiliser avec Django ?</a> Django 2.2 n'est pas compatible avec la plateforme Elastic Beanstalk Python 3.6.
+                                 La dernière version compatible est Django 2.1.
+                              </p>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Pour vérifier que Django est installé, entrez ce qui suit.</p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt)~$ <strong class="userinput"><code>pip freeze</code></strong>
+Django==2.1.1
+...</code></pre>
+                           <p>Cette commande répertorie tous les packages installés dans votre environnement virtuel.
+                              Plus tard, vous utiliserez le résultat de cette commande pour configurer votre projet
+                              à utiliser avec Elastic Beanstalk.
+                           </p>
+                           
+                        </li>
+                     </ol>
+                     
+                     
+                     <h2 id="python-django-create-app">Création d'un projet Django</h2>
+                     
+                     <p>Vous êtes maintenant prêt à créer un projet Django et à l'exécuter sur votre ordinateur,
+                        à l'aide de l'environnement virtuel.
+                     </p>
+                     
+                     <div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Ce didacticiel utilise SQLite, qui est un moteur de base de données inclus dans Python.
+                           La base de données est déployée avec vos fichiers de projet. Pour les environnements
+                           de production, il est recommandé d'utiliser Amazon Relational Database Service (Amazon
+                           RDS) et de le séparer de votre environnement. Pour plus d'informations, consultez
+                           <a href="create-deploy-python-rds.html">Ajout d'une instance de base de données Amazon RDS à votre environnement d'application
+                              Python</a>.
+                        </p>
+                     </div>
+                     
+                     <p class="title"><b>Pour générer une application Django</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Activez votre environnement virtuel.</p>
+                           
+                           <div class="option container">
+                              <div class="optionselector"><span class="optionanchor" id=""><span class="option  selected" data-tab="unix-based-systems">Unix-based Systems</span></span><span class="optionanchor" id=""><span class="option " data-tab="windows">Windows</span></span></div>
+                              <dl>
+                                 <dt>Unix-based Systems</dt>
+                                 <dd class="selected" data-tab="unix-based-systems"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~$ <strong class="userinput"><code>source ~/eb-virt/bin/activate</code></strong>
+(eb-virt) ~$</code></pre></dd>
+                                 <dt>Windows</dt>
+                                 <dd class="" data-tab="windows"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">C:\&gt;<strong class="userinput"><code>%HOMEPATH%\eb-virt\Scripts\activate</code></strong>
+(eb-virt) C:\&gt;</code></pre></dd>
+                              </dl>
+                           </div>
+                           
+                           <p>Vous verrez le préfixe <code class="code">(eb-virt)</code> ajouté à votre invite de commande, ce qui indique que vous êtes dans un environnement
+                              virtuel.
+                           </p>
+                           
+                           <div class="aws-note">
+                              <p class="aws-note">Note</p>
+                              <p>Les instructions restantes montrent l'invite de commande Linux <code class="code">~$</code> dans votre répertoire de base et le répertoire de base Linux <code class="code">~/</code>. Sous Windows, il s'agit de <code class="code">C:\Users\<em class="replaceable"><code>USERNAME</code></em>&gt;</code>, où <em class="replaceable"><code>USERNAME</code></em> est votre nom de connexion Windows.
+                              </p>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Utilisez la commande <code class="code">django-admin startproject</code> pour créer un projet Django nommé <code>ebdjango</code>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt)~$ <strong class="userinput"><code>django-admin startproject ebdjango</code></strong></code></pre>
+                           <p>Cette commande crée un site Django standard nommé <b>ebdjango</b> avec la structure de répertoires suivante.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="">~/ebdjango
+  |-- ebdjango
+  |   |-- __init__.py
+  |   |-- settings.py
+  |   |-- urls.py
+  |   `-- wsgi.py
+  `-- manage.py</code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Exécutez votre site Django localement avec <code class="code">manage.py runserver</code>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~$ <strong class="userinput"><code>cd ebdjango</code></strong></code></pre>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>python manage.py runserver</code></strong></code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Dans un navigateur web, ouvrez <code class="code">http://127.0.0.1:8000/</code> pour afficher le site.
+                           </p>
+                           
+                           <div class="mediaobject">
+                              
+                              <img src="images/eb_django_test_local.png" alt="&#xA;            La page de bienvenue de votre application Django s'exécutant en local&#xA;          " />
+                              
+                              
+                              
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Consultez le journal du serveur pour voir le résultat de votre demande. Pour arrêter
+                              le serveur web et revenir à votre environnement virtuel, appuyez sur <b>Ctrl+C</b>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">Django version 2.1.1, using settings 'ebdjango.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[07/Sep/2018 20:14:09] "GET / HTTP/1.1" 200 16348
+<strong class="userinput"><code>Ctrl+C</code></strong></code></pre>
+                           </li>
+                     </ol>
+                     
+                     
+                     <h2 id="python-django-configure-for-eb">Configuration de votre application Django pour Elastic Beanstalk</h2>
+                     
+                     <p>Maintenant que vous avez un site Django résidant sur votre ordinateur local, vous
+                        pouvez le configurer pour le déploiement avec Elastic Beanstalk.
+                     </p>
+                     
+                     <p>Par défaut, Elastic Beanstalk recherche un fichier nommé <code class="code">application.py</code> pour démarrer votre application. Comme il n'existe pas dans le projet Django que
+                        vous avez créé, vous devez apporter quelques modifications à l'environnement de votre
+                        application. Vous devez également définir des variables d'environnement afin que les
+                        modules de votre application puissent être chargés.
+                     </p>
+                     
+                     <p class="title"><b>Pour configurer votre site pour Elastic Beanstalk</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Activez votre environnement virtuel.</p>
+                           
+                           <div class="option container">
+                              <div class="optionselector"><span class="optionanchor" id=""><span class="option  selected" data-tab="unix-based-systems">Unix-based Systems</span></span><span class="optionanchor" id=""><span class="option " data-tab="windows">Windows</span></span></div>
+                              <dl>
+                                 <dt>Unix-based Systems</dt>
+                                 <dd class="selected" data-tab="unix-based-systems"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>source ~/eb-virt/bin/activate</code></strong></code></pre></dd>
+                                 <dt>Windows</dt>
+                                 <dd class="" data-tab="windows"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">C:\Users\<em class="replaceable"><code>USERNAME</code></em>\ebdjango&gt;<strong class="userinput"><code>%HOMEPATH%\eb-virt\Scripts\activate</code></strong></code></pre></dd>
+                              </dl>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Exécutez <code class="code">pip freeze</code>, puis enregistrez les données de sortie dans un fichier nommé <code>requirements.txt</code>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>pip freeze &gt; requirements.txt</code></strong></code></pre>
+                           <p>Elastic Beanstalk utilise <code>requirements.txt</code> afin de déterminer quel package installer sur les instances EC2 qui exécutent votre
+                              application.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Créez un répertoire nommé <code class="code">.ebextensions</code>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>mkdir .ebextensions</code></strong></code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Dans le répertoire <code class="code">.ebextensions</code>, ajoutez un <a href="ebextensions.html">fichier de configuration</a> nommé <code class="code">django.config</code> avec le texte suivant.
+                           </p>
+                           
+                           <div class="example">
+                              <p class="title"><b>Exemple ~/ebdjango/.ebextensions/django.config</b></p>
+                              <div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="">option_settings:
+  aws:elasticbeanstalk:container:python:
+    WSGIPath: ebdjango/wsgi.py</code></pre></div>
+                           </div>
+                           
+                           <p>Ce paramètre, <code class="code">WSGIPath</code>, spécifie l'emplacement du script WSGI utilisé par Elastic Beanstalk pour lancer
+                              votre application.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Désactivez votre environnement virtuel avec la commande <code class="code">deactivate</code>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>deactivate</code></strong></code></pre>
+                           <p>Réactivez votre environnement virtuel chaque fois que vous devez ajouter des packages
+                              à votre application ou exécuter votre application localement.
+                           </p>
+                           
+                        </li>
+                     </ol>
+                     
+                     
+                     <h2 id="python-django-deploy">Déploiement de votre site avec l'interface de ligne de commande EB</h2>
+                     
+                     <p>Vous avez ajouté tout ce dont vous avez besoin pour déployer votre application sur
+                        Elastic Beanstalk. Le répertoire de votre projet devrait maintenant se présenter comme
+                        suit.
+                     </p>
+                     <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="">~/ebdjango/
+|-- .ebextensions
+|   `-- django.config
+|-- ebdjango
+|   |-- __init__.py
+|   |-- settings.py
+|   |-- urls.py
+|   `-- wsgi.py
+|-- db.sqlite3
+|-- manage.py
+`-- requirements.txt</code></pre>
+                     <p>Ensuite, vous allez créer votre environnement d'applications et déployer votre application
+                        configurée avec Elastic Beanstalk.
+                     </p>
+                     
+                     <p>Immédiatement après le déploiement, vous allez modifier la configuration de Django
+                        afin d'ajouter le nom de domaine attribué par Elastic Beanstalk à votre application
+                        au code <code class="code">ALLOWED_HOSTS</code> de Django. Ensuite, vous redéploierez votre application. Il s'agit d'une exigence
+                        de sécurité de Django, conçue pour empêcher les attaques de l'en-tête HTTP <code class="code">Host</code>. Pour plus d'informations, consultez <a href="https://docs.djangoproject.com/en/2.1/topics/security/#host-headers-virtual-hosting" target="_blank">Validation de l'en-tête Host</a>.
+                     </p>
+                     
+                     <p class="title"><b>Pour créer un environnement et déployer votre application Django</b></p>
+                     <div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Le didacticiel utilise l'interface de ligne de commande EB comme mécanisme de déploiement,
+                           mais vous pouvez également utiliser AWS Management Console pour déployer un fichier
+                           .zip incluant le contenu de votre projet. 
+                        </p>
+                     </div>
+                     <ol>
+                        <li>
+                           
+                           <p>Initialisez votre référentiel d'interface de ligne de commande EB avec la commande
+                              <b>eb init</b> :
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb init -p python-3.6 django-tutorial</code></strong>
+Application django-tutorial has been created.</code></pre>
+                           <p>Cette commande crée une application nommée <code>django-tutorial</code>. Elle configure également votre référentiel local pour créer des environnements avec
+                              la dernière version de la plateforme Python 3.6.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>(facultatif) Exécutez à nouveau la commande <b>eb init</b> pour configurer une paire de clés par défaut afin de pouvoir vous connecter à l'instance
+                              EC2 qui exécute votre application.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb init</code></strong>
+Do you want to set up SSH for your instances?
+(y/n): <strong class="userinput"><code>y</code></strong>
+Select a keypair.
+1) my-keypair
+2) [ Create new KeyPair ]</code></pre>
+                           <p>Sélectionnez une paire de clés si vous en avez déjà une, ou suivez les invites pour
+                              en créer une. Si vous ne voyez pas l'invite ou que vous avez besoin de modifier vos
+                              paramètres ultérieurement, exécutez <b>eb init -i</b>.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Créez un environnement et déployez-y votre application avec <b>eb create</b>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb create django-env</code></strong></code></pre>
+                           <div class="aws-note">
+                              <p class="aws-note">Note</p>
+                              <p>Si un message d'erreur « rôle de service requis » s'affiche, exécutez <code class="code">eb create</code> de manière interactive (sans spécifier de nom d'environnement) et l'interface de
+                                 ligne de commande EB créera le rôle pour vous.
+                              </p>
+                           </div>
+                           
+                           <p>Cette commande crée un environnement Elastic Beanstalk à charge équilibrée nommé <code>django-env</code>. La création d'un environnement prend environ 5 minutes. Lorsqu'Elastic Beanstalk
+                              crée les ressources nécessaires pour exécuter votre application, il génère des messages
+                              d'information que l'interface de ligne de commande EB relaie à votre terminal.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Lorsque le processus de création de l'environnement est terminé, recherchez le nom
+                              de domaine de votre nouvel environnement en exécutant <b>eb status</b>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb status</code></strong>
+Environment details for: django-env
+  Application name: django-tutorial
+  ...
+  CNAME: <em class="replaceable"><code>eb-django-app-dev.elasticbeanstalk.com</code></em>
+  ...</code></pre>
+                           <p>Le nom de domaine de votre environnement est la valeur de la propriété <code class="code">CNAME</code>.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Ouvrez le fichier <code>settings.py</code> dans le répertoire <code>ebdjango</code>. Recherchez le paramètre <code class="code">ALLOWED_HOSTS</code>, puis ajoutez le nom de domaine de votre application que vous avez trouvé à l'étape
+                              précédente à la valeur de ce paramètre. Si vous ne trouvez pas ce paramètre dans le
+                              fichier, ajoutez-le sur une nouvelle ligne.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">...
+ALLOWED_HOSTS = ['<em class="replaceable"><code>eb-django-app-dev.elasticbeanstalk.com</code></em>']</code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Enregistrez le fichier, puis déployez votre application en exécutant <b>eb deploy</b>. Lorsque vous exécutez <b>eb deploy</b>, l'interface de ligne de commande EB crée un groupe avec le contenu de votre répertoire
+                              de projet et le déploie dans votre environnement.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb deploy</code></strong></code></pre>
+                           <div class="aws-note">
+                              <p class="aws-note">Note</p>
+                              <p>Si vous utilisez Git avec votre projet, consultez <a href="eb3-cli-git.html">Utilisation de l'interface de ligne de commande EB avec Git</a>.
+                              </p>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Lorsque le processus de mise à jour de l'environnement est terminé, ouvrez votre site
+                              web avec la commande <b>eb open</b>.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb open</code></strong></code></pre>
+                           <p>Celle-ci ouvre une fenêtre de navigation en utilisant le nom de domaine créé pour
+                              votre application. Vous devez voir le même site web Django que celui que vous avez
+                              créé et testé localement.
+                           </p>
+                           
+                           <div class="mediaobject">
+                              
+                              <img src="images/eb_django_deployed.png" alt="&#xA;            La page de bienvenue de votre site web déployé avec Elastic Beanstalk&#xA;          " />
+                              
+                              
+                              
+                           </div>
+                           
+                        </li>
+                     </ol>
+                     
+                     <p>Si vous ne voyez pas votre application en cours d'exécution ou si vous obtenez un
+                        message d'erreur, consultez <a href="troubleshooting-deployments.html">Déploiements</a> afin d'obtenir de l'aide concernant la façon de déterminer la cause de l'erreur.
+                     </p>
+                     
+                     <p>Si vous <em>voyez</em> votre application en cours d'exécution, cela signifie que vous avez bien déployé
+                        votre première application Django avec Elastic Beanstalk.
+                     </p>
+                     
+                     
+                     <h2 id="python-django-update-app">Mise à jour de votre application</h2>
+                     
+                     <p>Maintenant que vous disposez d'une application en cours d'exécution sur Elastic Beanstalk,
+                        vous pouvez mettre à jour et redéployer votre application ou sa configuration, et
+                        Elastic Beanstalk va effectuer les tâches de mise à jour de vos instances et de démarrage
+                        de la nouvelle version de votre application.
+                     </p>
+                     
+                     <p>Pour cet exemple, nous activerons la console d'administration Django et configurerons
+                        quelques autres paramètres.
+                     </p>
+                     
+                     
+                     <h3 id="python-django-modify-site">Modification des paramètres de votre site</h3>
+                     
+                     <p>Par défaut, votre site web Django utilise le fuseau horaire UTC pour afficher l'heure.
+                        Vous pouvez modifier cela en spécifiant un fuseau horaire dans <code>settings.py</code>.
+                     </p>
+                     
+                     <p class="title"><b>Pour modifier le fuseau horaire de votre site</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Modifiez le paramètre <code class="code">TIME_ZONE</code> dans <code>settings.py</code>.
+                           </p>
+                           
+                           <div class="example">
+                              <p class="title"><b>Exemple ~/ebdjango/ebdjango/settings.py</b></p>
+                              <div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">...
+# Internationalization
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = <strong class="userinput"><code>'US/Pacific'</code></strong>
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True</code></pre></div>
+                           </div>
+                           
+                           <p>Pour obtenir une liste des fuseaux horaires, consultez <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">cette page</a>.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Déployez l'application dans votre environnement Elastic Beanstalk.</p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango/$ <strong class="userinput"><code>eb deploy</code></strong></code></pre>
+                           </li>
+                     </ol>
+                     
+                     
+                     
+                     <h3 id="python-django-create-admin">Création d'un administrateur de site</h3>
+                     
+                     <p>Vous pouvez créer un administrateur de site pour votre application Django afin d'accéder
+                        à la console d'administration directement à partir du site web. Les informations de
+                        connexion administrateur sont stockées en toute sécurité dans l'image de base de données
+                        locale incluse dans le projet par défaut que Django génère.
+                     </p>
+                     
+                     <p class="title"><b>Pour créer un administrateur de site</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Initialisez la base de données locale de votre application Django.</p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>python manage.py migrate</code></strong>
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying sessions.0001_initial... OK
+</code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Exécutez <code class="code">manage.py createsuperuser</code> pour créer un administrateur.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>python manage.py createsuperuser</code></strong>
+Username: <strong class="userinput"><code>admin</code></strong>
+Email address: <strong class="userinput"><code>me@mydomain.com</code></strong>
+Password: <strong class="userinput"><code>********</code></strong>
+Password (again): <strong class="userinput"><code>********</code></strong>
+Superuser created successfully.</code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Pour dire à Django où stocker les fichiers statiques, définissez <code class="code">STATIC_ROOT</code> dans <code>settings.py</code>.
+                           </p>
+                           
+                           <div class="example">
+                              <p class="title"><b>Exemple ~/ebdjango/ebdjango/settings.py</b></p>
+                              <div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight"># Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
+STATIC_URL = '/static/'
+<strong class="userinput"><code>STATIC_ROOT = 'static'</code></strong></code></pre></div>
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Exécutez <code class="code">manage.py collectstatic</code> pour remplir le répertoire <code>static</code> avec des ressources statiques (JavaScript, CSS et images) pour le site d'administration.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">(eb-virt) ~/ebdjango$ <strong class="userinput"><code>python manage.py collectstatic</code></strong>
+119 static files copied to ~/ebdjango/static
+          </code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Déployez votre application.</p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb deploy</code></strong></code></pre>
+                           </li>
+                        <li>
+                           
+                           <p>Affichez la console d'administration en ouvrant le site dans votre navigateur, en
+                              ajoutant <code class="code">/admin/</code> à l'URL du site, comme suit.
+                           </p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">http://<em class="replaceable"><code>djang-env.p33kq46sfh.us-west-2</code></em>.elasticbeanstalk.com/admin/</code></pre>
+                           <div class="mediaobject">
+                              
+                              <img src="images/eb_django_admin_login.png" alt="&#xA;              Entrez le nom d'utilisateur et le mot de passe que vous avez créés à l'étape 2 afin de vous connecter à la console d'administration.&#xA;            " />
+                              
+                              
+                              
+                           </div>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Connectez-vous avec le nom utilisateur et le mot de passe que vous avez configurés
+                              à l'étape 2.
+                           </p>
+                           
+                           <div class="mediaobject">
+                              
+                              <img src="images/eb_django_admin_console.png" alt="&#xA;              La console d'administration Django de votre site web Django déployé avec Elastic Beanstalk&#xA;            " />
+                              
+                              
+                              
+                           </div>
+                           
+                        </li>
+                     </ol>
+                     
+                     <p>Vous pouvez utiliser une procédure similaire de mise à jour/test locale suivie de
+                        <b>eb deploy</b>. Elastic Beanstalk effectue les tâches de mise à jour de vos serveurs actifs, afin
+                        de vous permettre de vous concentrer sur le développement d'applications plutôt que
+                        sur l'administration du serveur.
+                     </p>
+                     
+                     
+                     
+                     <h3 id="python-django-migrate-site">Ajout d'un fichier de configuration de migration de base de données</h3>
+                     
+                     <p>Vous pouvez ajouter des commandes à votre script <code class="code">.ebextensions</code>, qui sont exécutées lors de la mise à jour de votre site. Cela vous permet de générer
+                        automatiquement des migrations de base de données.
+                     </p>
+                     
+                     <p class="title"><b>Pour ajouter une étape de migration lorsque votre application est déployée</b></p>
+                     <ol>
+                        <li>
+                           
+                           <p>Créez un <a href="ebextensions.html">fichier de configuration</a> nommé <code>db-migrate.config</code> avec le contenu suivant.
+                           </p>
+                           
+                           <div class="example">
+                              <p class="title"><b>Exemple ~/ebdjango/.ebextensions/db-migrate.config</b></p>
+                              <div class="example-contents"><pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="">container_commands:
+  01_migrate:
+    command: "django-admin.py migrate"
+    leader_only: true
+option_settings:
+  aws:elasticbeanstalk:application:environment:
+    DJANGO_SETTINGS_MODULE: ebdjango.settings</code></pre></div>
+                           </div>
+                           
+                           <p>Ce fichier de configuration exécute la commande <code class="code">django-admin.py migrate</code> lors du processus de déploiement, avant le démarrage de votre application. Étant
+                              donné que cette commande est exécutée avant le démarrage de l'application, vous devez
+                              également configurer la variable d'environnement <code class="code">DJANGO_SETTINGS_MODULE</code> explicitement (généralement, <code>wsgi.py</code> s'occupe de cette tâche pour vous pendant le démarrage). La spécification de <code class="code">leader_only: true</code> dans la commande garantit qu'elle est exécutée une seule fois lors d'un déploiement
+                              sur plusieurs instances.
+                           </p>
+                           
+                        </li>
+                        <li>
+                           
+                           <p>Déployez votre application.</p>
+                           <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb deploy</code></strong></code></pre>
+                           </li>
+                     </ol>
+                     
+                     
+                     
+                     <h2 id="python-django-stopping">Nettoyage</h2>
+                     
+                     <p>Pour enregistrer les heures d'instance et d'autres ressources AWS entre les sessions
+                        de développement, résiliez votre environnement Elastic Beanstalk avec la commande
+                        <b>eb
+                           terminate</b>.
+                     </p>
+                     <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~/ebdjango$ <strong class="userinput"><code>eb terminate django-env</code></strong></code></pre>
+                     <p>Cette commande résilie l'environnement et toutes les ressources AWS qui s'y exécutent.
+                        Cependant, elle ne supprime pas l'application. Vous pouvez donc toujours créer d'autres
+                        environnements avec la même configuration en exécutant à nouveau <b>eb create</b>. Pour plus d'informations sur les commandes de l'interface de ligne de commande EB,
+                        consultez <a href="eb-cli3-getting-started.html">Gestion d'environnements Elastic Beanstalk via l'interface de ligne de commande EB</a>. 
+                     </p>
+                     
+                     <p>Si vous en avez terminé avec l'exemple d'application, vous pouvez également supprimer
+                        le dossier du projet et l'environnement virtuel.
+                     </p>
+                     <pre class="programlisting"><div class="code-btn-container"><div class="btn-dark-theme" title="Thème sombre" title-dark="Thème sombre" title-light="Thème clair"></div></div><code class="nohighlight">~$ <strong class="userinput"><code>rm -rf ~/eb-virt</code></strong>
+~$ <strong class="userinput"><code>rm -rf ~/ebdjango</code></strong></code></pre>
+                     
+                     <h2 id="python-django-next-steps">Étapes suivantes</h2>
+                     
+                     <p>Pour plus d'informations sur Django, notamment un didacticiel approfondi, consultez
+                        la <a href="https://docs.djangoproject.com/en/2.1/" target="_blank">documentation officielle</a>.
+                     </p>
+                     
+                     <p>Si vous souhaitez essayer une autre infrastructure web Python, consultez <a href="create-deploy-python-flask.html">Déploiement d'une application Flask sur Elastic Beanstalk</a>.
+                     </p>
+                     
+                     <div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div>
+                  </div>
+                  <noscript>
+                     <div>
+                        <div>
+                           <div>
+                              <div id="js_error_message">
+                                 <p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="Avertissement" /> <strong>JavaScript est désactivé ou n'est pas disponible dans votre navigateur.</strong></p>
+                                 <p>Pour que vous puissiez utiliser la documentation AWS, Javascript doit être activé.
+                                    Vous trouverez des instructions sur les pages d'aide de votre navigateur.
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </noscript>
+                  <div id="main-col-footer">
+                     <div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">Conventions de rédaction</a></div>
+                     <div id="next"><a class="awstoc" accesskey="p" href="create-deploy-python-flask.html">« Précédent </a><a class="awstoc" accesskey="n" href="create-deploy-python-rds.html">Suivant »</a></div>
+                     <div id="copyright-main-footer">© 2019, Amazon Web Services, Inc. ou ses sociétés apparentées. Tous droits réservés.</div>
+                  </div>
+               </div>
+            </div>
+            <div id="right-expanded">
+               <div id="right-content-wrapper">
+                  <div id="pagetoc">
+                     <p>Sur cette page :</p>
+                     <ul class="pagetoc">
+                        <li class="pagetoc" name="Prérequis"><a class="pagetoc" href="#python-django-prereq">Prérequis</a></li>
+                        <li class="pagetoc" name="Configuration d'un environnement virtuel Python et installation de Django"><a class="pagetoc" href="#python-django-setup-venv">Configuration d'un environnement virtuel Python et installation de Django</a></li>
+                        <li class="pagetoc" name="Création d'un projet Django"><a class="pagetoc" href="#python-django-create-app">Création d'un projet Django</a></li>
+                        <li class="pagetoc" name="Configuration de votre application Django pour Elastic Beanstalk"><a class="pagetoc" href="#python-django-configure-for-eb">Configuration de votre application Django pour Elastic Beanstalk</a></li>
+                        <li class="pagetoc" name="Déploiement de votre site avec l'interface de ligne de commande EB"><a class="pagetoc" href="#python-django-deploy">Déploiement de votre site avec l'interface de ligne de commande EB</a></li>
+                        <li class="pagetoc" name="Mise à jour de votre application"><a class="pagetoc" href="#python-django-update-app">Mise à jour de votre application</a></li>
+                        <li class="pagetoc" name="Nettoyage"><a class="pagetoc" href="#python-django-stopping">Nettoyage</a></li>
+                        <li class="pagetoc" name="Étapes suivantes"><a class="pagetoc" href="#python-django-next-steps">Étapes suivantes</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="cookie-notice">
+         <div class="cookie-notice-text">Nous utilisons les cookies pour fournir et améliorer nos services. En utilisant notre
+            site, vous acceptez les cookies. <a href="http://aws.amazon.com/legal/cookies">En savoir plus</a></div>
+      </div>
+      <div id="footer">
+         <div id="footer_short_fb" class="hide" title="Commentaire"><a target="_blank" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AEB&amp;topic_url=http://docs.aws.amazon.com/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html&amp;hidden_guide_name=Manuel du d%C3%A9veloppeur&amp;hidden_api_version=&amp;hidden_file_name=create-deploy-python-django"><i class="awsdocs-footer-text fa fa-envelope-o"></i></a></div>
+         <div id="footer_toggle" class="mediaobject">
+            <div id="footer_toggle_img" class="awsdocs-footer-text fa fa-caret-down"></div>
+            <div id="footer_toggle_img_collapse" class="hide awsdocs-footer-text fa fa-caret-right"></div>
+         </div>
+         <div id="footer-left"><a class="awsdocs-footer-text" target="_top" href="http://aws.amazon.com/terms">Conditions d'utilisation</a><span class="awsdocs-footer-text"> | </span><a class="awsdocs-footer-text" target="_top" href="http://aws.amazon.com/privacy">Confidentialité</a><span class="awsdocs-footer-text"> | </span><span class="awsdocs-footer-text">© 2019, Amazon Web Services, Inc. ou ses sociétés apparentées. Tous droits réservés.</span></div>
+         <div id="footer-right">
+            <div id="feedback">
+               <div id="forums"><a id="forum_link" target="_blank" href="http://forums.aws.amazon.com/forum.jspa?forumID=86" class="awsdocs-footer-text">Des questions ? Consultez les forums.</a></div>
+               <div id="feedback-message" class="awsdocs-footer-text">Cette page vous a-t-elle été utile ?</div>
+               <div id="feedback-yesno-buttons"><a class="awstoc btn btn-default" target="_blank" href="feedbackyes.html?topic_url=http://docs.aws.amazon.com/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Oui</a><a class="awstoc btn btn-default" target="_blank" href="feedbackno.html?topic_url=http://docs.aws.amazon.com/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html">Non</a></div>
+               <div id="feedback-feedback-button"><a class="awstoc btn btn-default" target="_blank" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=AEB&amp;topic_url=http://docs.aws.amazon.com/fr_fr/elasticbeanstalk/latest/dg/create-deploy-python-django.html&amp;hidden_guide_name=Manuel du d%C3%A9veloppeur&amp;hidden_api_version=&amp;hidden_file_name=create-deploy-python-django">Commentaire</a></div>
+            </div>
+         </div>
+      </div>
+      <!-- SiteCatalyst code version: H.25.2.
+            Copyright 1996-2012 Adobe, Inc. All Rights Reserved
+            More info available at http://www.omniture.com --><script language="JavaScript" type="text/javascript" src="https://a0.awsstatic.com/s_code/js/1.0/awshome_s_code.js"></script><script language="JavaScript" type="text/javascript">
+         <!--
+
+            // Documentation Service Name
+            s.prop66='AWS Elastic Beanstalk';
+            s.eVar66='D=c66';
+  
+            // Documentation Guide Name                                                                 
+            s.prop65='Manuel du développeur';
+            s.eVar65='D=c65';
+
+            var s_code=s.t();if(s_code)document.write(s_code)//--></script><script language="JavaScript" type="text/javascript">
+         <!--
+                if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+                //--></script><noscript><img src="https://amazonwebservices.d2.sc.omtrdc.net/b/ss/awsamazondev/1/H.25.2--NS/0" height="1" width="1" border="0" alt="" /></noscript>
+      <!--/DO NOT REMOVE/-->
+      <!-- End SiteCatalyst code version: H.25.2. -->
+   </body>
+</html>

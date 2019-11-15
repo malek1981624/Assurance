@@ -1,0 +1,133 @@
+Cours:
+!!! https://www.youtube.com/channel/UCmpptkXu8iIFe6kfDK5o7VQ/playlists
+
+!!! 10 heurs: https://www.youtube.com/watch?v=GwIo3gDZCVQ
+08 heures stats pour ML: https://www.youtube.com/watch?v=74oUwKezFho
+04 heures: https://www.youtube.com/watch?v=JMUxmLyrhSk
+06 heurs: https://www.youtube.com/watch?v=9f-GarcDY58
+https://www.youtube.com/watch?v=xEG8u62TB2Q
+https://www.youtube.com/watch?v=YJyRBPz4CoM
+https://www.youtube.com/watch?v=DWsJc1xnOZo
+https://www.youtube.com/user/usievents/playlists
+https://www.youtube.com/channel/UCVso5UVvQeGAuwbksmA95iA/playlists
+https://www.youtube.com/channel/UCDE2Dt16Asi-RiR_GNe9scA/playlists
+https://www.youtube.com/watch?v=MXpjoCUtxGU
+
+En FRANCAIS: 
+https://www.youtube.com/playlist?list=PLO_fdPEVlfKqUF5BPKjGSh7aV9aBshrpY
+https://www.youtube.com/watch?v=BLZo9QLt0UY&t=1181s
+https://www.youtube.com/watch?v=M4NZGlse3RM&t=68s
+https://www.youtube.com/channel/UCmpptkXu8iIFe6kfDK5o7VQ/playlists
+
+
+Python:
+Cours python ML fr: FORMATION PYTHON MACHINE LEARNING (2019) (1/30)
+Formation EN: https://www.youtube.com/playlist?list=PLQVvvaa0QuDfKTOs3Keq_kaG2P55YRn5v
+https://www.youtube.com/watch?v=ujTCoH21GlA
+EN Arabe: https://www.youtube.com/playlist?list=PLH2enzYTUDTuWsXCqwBzfDC3sLn39QxEN
+
+
+
+https://www.youtube.com/watch?v=f3I0izerPvc
+https://www.youtube.com/watch?v=3AQ_74xrch8
+!! https://www.youtube.com/watch?v=KfnhNlD8WZI
+https://www.youtube.com/watch?v=ZD5lJGq1rvQ&t=941s
+https://www.youtube.com/watch?v=URdnFlZnlaE
+https://www.youtube.com/watch?v=MphtprumgzA
+https://www.youtube.com/watch?v=Q59X518JZHE
+
+!!! WebService pour ML:
+https://www.youtube.com/watch?v=osA8SpTBUWY
+https://www.youtube.com/watch?v=xdSQUMRFUgE
+
+
+
+TensorFlow:
+https://www.youtube.com/watch?v=T_afaArR0E8
+
+
+!! Azure ML: 
+Azure ML et Python: https://www.youtube.com/watch?v=VIsXeTuW3FU
+!! https://www.youtube.com/watch?v=hXG_zvpaZF4
+!!!! https://www.youtube.com/watch?v=nh8FTf5HVn4
+!!https://www.youtube.com/watch?v=o1XoHHSFfws
+!!! https://www.youtube.com/watch?v=G0QZP8YkeVA
+https://www.youtube.com/watch?v=hXG_zvpaZF4
+Azure Visual Studio: https://www.youtube.com/watch?v=u5tqeLAWLPU
+
+AWS Amazon:
+AWS  France: https://www.youtube.com/watch?v=ELv3tdJCIbE
+https://www.youtube.com/watch?v=gpeP2rBTZuM
+https://www.youtube.com/watch?v=lO224Iec-uI
+
+Django, Doker:
+https://www.youtube.com/playlist?list=PLQVvvaa0QuDe9nqlirjacLkBYdgc2inh3
+https://www.youtube.com/watch?v=SQAwzW0iQ6o
+
+Java:
+https://www.youtube.com/watch?v=ljuf1mYqAIE
+
+Doker Container:
+https://www.youtube.com/watch?v=knAFR4u73Es
+
+Flask Keras:
+!!!https://www.youtube.com/playlist?list=PLpEPgC7cUJ4YzbWZE28hBVSO9rHiVNWlf
+https://www.youtube.com/watch?v=mrExsjcvF4o
+https://www.youtube.com/watch?v=SI1hVGvbbZ4
+Flask: https://www.youtube.com/watch?v=tjSV6pzJsGg
+keras: https://www.youtube.com/watch?v=f6Bf3gl4hWY
+Python : https://www.youtube.com/watch?v=j-3vuBynnOE
+
+Deep Learning:
+https://www.youtube.com/watch?v=GJJc1t0rtSU
+python: https://www.youtube.com/watch?v=5qVZxriLlWM
+FR TensorFlow FR: https://www.youtube.com/watch?v=O9yl9KKKoQI
+FR Formation: https://www.youtube.com/watch?v=og5m7f1seno&list=PLpEPgC7cUJ4b1ARx8PyIQa_sdZRL2GXw5
+
+Cours Apprentissage automatique u Sherbrook:
+https://www.youtube.com/watch?v=GROvIr2GGcc&list=PL6Xpj9I5qXYFD_rc1tttugXLfE2TcKyiO
+
++++++++
+
+https://www.youtube.com/watch?v=-UYyyeYJAoQ
+
+https://www.youtube.com/watch?v=xEG8u62TB2Q
+
+https://www.youtube.com/watch?v=R0vC31OXt-g
+
+https://www.youtube.com/watch?v=f6Bf3gl4hWY
+
+https://www.youtube.com/watch?v=TzLuAjhfSrE
+
+https://www.youtube.com/watch?v=RbejfDTHhhg
+
+https://www.youtube.com/watch?v=XsD2u7hAwI8
+
+https://www.youtube.com/watch?v=nNHSlpJMOJs
+
+https://www.youtube.com/watch?v=-UYyyeYJAoQ&list=PL8Bgdi87Y1lUveCg-l8380_xU8IHWL5Ny
+
+
+
+!! https://www.youtube.com/watch?v=y16g0b_x9oM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
